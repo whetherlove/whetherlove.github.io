@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>疯狂的小鸡</title>
+    <title>Spring整体架构 · 疯狂的小鸡</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -214,12 +214,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >疯狂的小鸡</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Spring整体架构</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>疯狂的小鸡</a>
 </header>
@@ -231,24 +242,77 @@
 
 
 
+
+height:40vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            Spring整体架构
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">953</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/10/01</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -349,189 +413,85 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/AOP的实现/" >
-            
-                <span>AOP的实现</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析AOP实现中的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从ProxyFactoryBean类中的getObject()方法入手。
-spring与AOP有关的模块有2个，一个是spring-aop, 这是spring自己的aop实现，另一个是spring-aspect，这是利用 aspectJ的aop实现。这两者最大的区别在于Spring中AOP是基于JDK动态代理，而AspectJ是基于字节码操作。这篇文章主要介绍基于JDK动态代理的实现。
-先回顾一下代理模式。代理模式给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用。代理对象可以...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>spring框架是一个分层架构，它包含一系列的功能要素，并被分为大约20个模块。<br><img src="/images/spring_layer.png" alt="Spring分层架构"></p>
+<h2 id="Core-Container"><a href="#Core-Container" class="headerlink" title="Core Container"></a>Core Container</h2><p>Core Container(核心容器)包含有Core、Beans、Context和Expression Language模块。<br>Core和Beans模块是框架的基础部分，提供IoC(转控制)和依赖注入特性。这里的基础概念是BeanFactory，它提供对Factory模式的经典实现来消除对程序性单例模式的需要，并真正地允许你从程序逻辑中分离出依赖关系和配置。</p>
+<h3 id="Core"><a href="#Core" class="headerlink" title="Core"></a>Core</h3><p>Core模块主要包含Spring框架基本的核心工具类。</p>
+<h3 id="Beans"><a href="#Beans" class="headerlink" title="Beans"></a>Beans</h3><p>Beans模块是所有应用都要用到的，它包含访问配置文件、创建和管理bean以及进行Inversion of Control/Dependency Injection(Ioc/DI)操作相关的所有类。</p>
+<h3 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h3><p>Context模块构建于Core和Beans模块基础之上，提供了一种类似于JNDI注册器的框架式的对象访问方法。Context模块继承了Beans的特性，为Spring核心提供了大量扩展，添加了对国际化(如资源绑定)、事件传播、资源加载和对Context的透明创建的支持。ApplicationContext接口是Context模块的关键。</p>
+<h3 id="Expression-Language"><a href="#Expression-Language" class="headerlink" title="Expression Language"></a>Expression Language</h3><p>Expression Language模块提供了一个强大的表达式语言用于在运行时查询和操纵对象，该语言支持设置/获取属性的值，属性的分配，方法的调用，访问数组上下文、容器和索引器、逻辑和算术运算符、命名变量以及从Spring的IoC容器中根据名称检索对象。</p>
+<h2 id="Middle-layer"><a href="#Middle-layer" class="headerlink" title="Middle layer"></a>Middle layer</h2><h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>spring-aop 提供了一个符合AOP联盟标准的面向切面编程的实现。</p>
+<h3 id="AspectJ"><a href="#AspectJ" class="headerlink" title="AspectJ"></a>AspectJ</h3><p>spring-aspects模块集成AspectJ来实现aop。</p>
+<h3 id="Instrumentation"><a href="#Instrumentation" class="headerlink" title="Instrumentation"></a>Instrumentation</h3><p>spring-instrument主要为应用服务器提供支持。例如spring-instrument-tomcat就包含了一个tomcat代理服务器。</p>
+<h3 id="Messaging"><a href="#Messaging" class="headerlink" title="Messaging"></a>Messaging</h3><p>Spring4.0之后的版本提供了spring-message模块用以支持消息驱动的系统。同时提供了将message设置到method的注解。</p>
+<h2 id="Data-Access-Integration"><a href="#Data-Access-Integration" class="headerlink" title="Data Access/Integration"></a>Data Access/Integration</h2><p>Data Access/Integration主要包含 JDBC, ORM, OXM, JMS 和 Transaction模块。</p>
+<h3 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h3><p>Spring-jdbc模块提供了一个JDBC抽象层，它可以消除冗长的JDBC编码和解析数据库厂商特有的错误代码，这个模块包含了Spring对JDBC数据访问进行封装的所有类。</p>
+<h3 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h3><p>spring-orm模块为流行的对象-关系映射API，如JPA、JDO、Hibernate、iBatis等，提供了一个交互层，利用ORM封装包，可以混合使用所有Spring提供的特性进行O/R映射，如前边提到的简单声明性事务管理。</p>
+<h3 id="JMS"><a href="#JMS" class="headerlink" title="JMS"></a>JMS</h3><p>spring-jms模块主要用于支持消息的生产与消费，4.1后与message模块集成。</p>
+<h3 id="OXM"><a href="#OXM" class="headerlink" title="OXM"></a>OXM</h3><p>spring-oxm模块模块提供了一个xml-object mapping的抽象层。</p>
+<h3 id="Transactions"><a href="#Transactions" class="headerlink" title="Transactions"></a>Transactions</h3><p>spring-tx模块为所有POJO及实现了接口特定的类提供程序性和声明性事务支持。</p>
+<h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><p>Web层在applicationContext上，为基于Web的应用程序提供了上下文。 Web模块还简化了处理多部分请求以及将请求参数绑定到域对象的工作。Web层包含了spring-web, spring-webmvc, spring-websocket 和 springwebmvc-portlet模块。</p>
+<h3 id="Web-1"><a href="#Web-1" class="headerlink" title="Web"></a>Web</h3><p>spring-web模块提供了基础的面向Web的集成特性，例如，多文件上传、使用Servlet listeners初始化IoC容器以及一个面向Web的应用上下文。该模块还包含了对REST Web Service的实现。</p>
+<h3 id="Webmvc"><a href="#Webmvc" class="headerlink" title="Webmvc"></a>Webmvc</h3><p>spring-webmvc(也称Web-Servlet) 模块该模块包含Spring的model-view-controller(MVC)实现，Spring的MVC框架使得模型范围内的代码和web forms之间能够清楚地分离开来，并与Spring框架的其他特性基础在一起。</p>
+<h3 id="Portlet"><a href="#Portlet" class="headerlink" title="Portlet"></a>Portlet</h3><p>spring-webmvc-portlet模块：提供了用于Portlet 的MVC的实现。</p>
+<h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><p>spring-test模块主要提供单元测试与集成测试的支持，支持Junit与TestNG。同时也提供mock 对象以供测试。</p>
+<p>参考文档：<br><a href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/spring-framework-reference/html/" target="_blank" rel="noopener">Spring Framework Reference Documentation-4.3.14.RELEASE</a></p>
 
-            
-        </div>
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/DI的实现/" >
-            
-                <span>DI的实现</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析DI发生时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从BeanFactory类中的getBean()方法入手。
-IoC容器的初始化过程仅仅是建立了BeanDefinition的数据映射。但Bean的依赖关系尚未建立。 依赖注入的触发时机有可以分为两类。对于懒加载的对象，依赖注入发生在用户第一次调用getBean()向容器索要bean时。对于非懒加载对象则是发生在容器初始化时。
-doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的地方，他的实现从AbstractBeanFactory类看起。可以看到，实际获取bea...
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
+            <p>原文链接：<a href="https://whetherlove.github.io/2018/10/01/Spring整体架构/">https://whetherlove.github.io/2018/10/01/Spring整体架构/</a>
+            <p>发表日期：<a href="https://whetherlove.github.io/2018/10/01/Spring整体架构/">October 1st 2018, 1:52:23 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/01/Spring整体架构/">October 1st 2018, 5:12:20 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/IOC相关类梳理/" >
-            
-                <span>IOC相关类梳理</span>
-        </a>
-        <div class="abstract-content">
-            BeanFactory首先谈谈BeanFactory。BeanFactory是IoC容器最顶端的接口，它定义了IoC容器的基本形式与规范。例如，接口中设计了getBean()方法。这个方法是IoC容器的API的主要方法，用来取得容器中管理的bean。另外还定义了一些bean类型相关的方法，例如isSingleton(), isPrototype()，getType()等。
-BeanFactory接口下面主要有两条设计线路。
-DefaultListableBeanFactory第一条线路的核心是DefaultListableBeanFactory这个类。在spring中，这个类是作为一个默...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/Ioc容器的初始化/" >
-            
-                <span>IOC容器的初始化</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析IOC容器的初始化时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从AbstractApplicationContext类中的refresh()方法入手。
-IoC容器的初始化是由refresh()方法来完成的。这个方法标志着Ioc容器的正式启动。这个方法主要执行三个功能。也就是BeanDefinition的定位、载入和注册。事实上，这个方法实际上应用了模板方法的设计模式，定义了一系列功能，具体的功能实现由子类完成。
-定位定位分两步，第一步是获取Resource。AbstractApplicationContext由于继承了DefaultReso...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/Spring整体架构/" >
-            
-                <span>Spring整体架构</span>
-        </a>
-        <div class="abstract-content">
-            spring框架是一个分层架构，它包含一系列的功能要素，并被分为大约20个模块。
-Core ContainerCore Container(核心容器)包含有Core、Beans、Context和Expression Language模块。Core和Beans模块是框架的基础部分，提供IoC(转控制)和依赖注入特性。这里的基础概念是BeanFactory，它提供对Factory模式的经典实现来消除对程序性单例模式的需要，并真正地允许你从程序逻辑中分离出依赖关系和配置。
-CoreCore模块主要包含Spring框架基本的核心工具类。
-BeansBeans模块是所有应用都要用到的，它包含访问配...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-</div>
-
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/10/01/Ioc容器的初始化/" title= "IOC容器的初始化">
+                    <div class="nextTitle">IOC容器的初始化</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= MTAyMC80MDA0Ny8xNjU3NA==>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -610,6 +570,24 @@ BeansBeans模块是所有应用都要用到的，它包含访问配...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:40vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Core-Container"><span class="toc-number">1.</span> <span class="toc-text">Core Container</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Core"><span class="toc-number">1.1.</span> <span class="toc-text">Core</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Beans"><span class="toc-number">1.2.</span> <span class="toc-text">Beans</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Context"><span class="toc-number">1.3.</span> <span class="toc-text">Context</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Expression-Language"><span class="toc-number">1.4.</span> <span class="toc-text">Expression Language</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Middle-layer"><span class="toc-number">2.</span> <span class="toc-text">Middle layer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AOP"><span class="toc-number">2.1.</span> <span class="toc-text">AOP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AspectJ"><span class="toc-number">2.2.</span> <span class="toc-text">AspectJ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Instrumentation"><span class="toc-number">2.3.</span> <span class="toc-text">Instrumentation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Messaging"><span class="toc-number">2.4.</span> <span class="toc-text">Messaging</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Data-Access-Integration"><span class="toc-number">3.</span> <span class="toc-text">Data Access/Integration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC"><span class="toc-number">3.1.</span> <span class="toc-text">JDBC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ORM"><span class="toc-number">3.2.</span> <span class="toc-text">ORM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JMS"><span class="toc-number">3.3.</span> <span class="toc-text">JMS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OXM"><span class="toc-number">3.4.</span> <span class="toc-text">OXM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transactions"><span class="toc-number">3.5.</span> <span class="toc-text">Transactions</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web"><span class="toc-number">4.</span> <span class="toc-text">Web</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-1"><span class="toc-number">4.1.</span> <span class="toc-text">Web</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Webmvc"><span class="toc-number">4.2.</span> <span class="toc-text">Webmvc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Portlet"><span class="toc-number">4.3.</span> <span class="toc-text">Portlet</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Test"><span class="toc-number">5.</span> <span class="toc-text">Test</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -785,6 +763,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

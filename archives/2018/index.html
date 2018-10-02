@@ -200,6 +200,17 @@
     
     <!-- 谷歌统计  -->
     
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-126697462-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
 </head>
 
     
@@ -346,31 +357,175 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/09/30/hello-world/" >
+        <a class="abstract-title" href = "/2018/10/01/AOP的实现/" >
             
-                <span>Hello World</span>
+                <span>AOP的实现</span>
         </a>
         <div class="abstract-content">
-            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new "My New Post"
-More info: Writing
-Run server1$ hexo server
-More...
+            本文章着重分析AOP实现中的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从ProxyFactoryBean类中的getObject()方法入手。
+spring与AOP有关的模块有2个，一个是spring-aop, 这是spring自己的aop实现，另一个是spring-aspect，这是利用 aspectJ的aop实现。这两者最大的区别在于Spring中AOP是基于JDK动态代理，而AspectJ是基于字节码操作。这篇文章主要介绍基于JDK动态代理的实现。
+先回顾一下代理模式。代理模式给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用。代理对象可以...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/09/30</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Start">Start</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Test">Test</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
     
 </div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/01/DI的实现/" >
+            
+                <span>DI的实现</span>
+        </a>
+        <div class="abstract-content">
+            本文章着重分析DI发生时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从BeanFactory类中的getBean()方法入手。
+IoC容器的初始化过程仅仅是建立了BeanDefinition的数据映射。但Bean的依赖关系尚未建立。 依赖注入的触发时机有可以分为两类。对于懒加载的对象，依赖注入发生在用户第一次调用getBean()向容器索要bean时。对于非懒加载对象则是发生在容器初始化时。
+doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的地方，他的实现从AbstractBeanFactory类看起。可以看到，实际获取bea...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/01/IOC相关类梳理/" >
+            
+                <span>IOC相关类梳理</span>
+        </a>
+        <div class="abstract-content">
+            BeanFactory首先谈谈BeanFactory。BeanFactory是IoC容器最顶端的接口，它定义了IoC容器的基本形式与规范。例如，接口中设计了getBean()方法。这个方法是IoC容器的API的主要方法，用来取得容器中管理的bean。另外还定义了一些bean类型相关的方法，例如isSingleton(), isPrototype()，getType()等。
+BeanFactory接口下面主要有两条设计线路。
+DefaultListableBeanFactory第一条线路的核心是DefaultListableBeanFactory这个类。在spring中，这个类是作为一个默...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/01/Ioc容器的初始化/" >
+            
+                <span>IOC容器的初始化</span>
+        </a>
+        <div class="abstract-content">
+            本文章着重分析IOC容器的初始化时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从AbstractApplicationContext类中的refresh()方法入手。
+IoC容器的初始化是由refresh()方法来完成的。这个方法标志着Ioc容器的正式启动。这个方法主要执行三个功能。也就是BeanDefinition的定位、载入和注册。事实上，这个方法实际上应用了模板方法的设计模式，定义了一系列功能，具体的功能实现由子类完成。
+定位定位分两步，第一步是获取Resource。AbstractApplicationContext由于继承了DefaultReso...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/01/Spring整体架构/" >
+            
+                <span>Spring整体架构</span>
+        </a>
+        <div class="abstract-content">
+            spring框架是一个分层架构，它包含一系列的功能要素，并被分为大约20个模块。
+Core ContainerCore Container(核心容器)包含有Core、Beans、Context和Expression Language模块。Core和Beans模块是框架的基础部分，提供IoC(转控制)和依赖注入特性。这里的基础概念是BeanFactory，它提供对Factory模式的经典实现来消除对程序性单例模式的需要，并真正地允许你从程序逻辑中分离出依赖关系和配置。
+CoreCore模块主要包含Spring框架基本的核心工具类。
+BeansBeans模块是所有应用都要用到的，它包含访问配...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+</div>
+
             
         </div>
     </article>
@@ -403,7 +558,7 @@ More...
             
                 <span class="iconfont-archer wechat" title=wechat>
                   
-                  <img class="profile-qr" src="/assets/example_qr.png" />
+                  <img class="profile-qr" src="/assets/wechat.png" />
                 </span>
             
         
@@ -477,9 +632,43 @@ More...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 1
+        Total : 5
         </div>
         <!-- search  -->
         
@@ -495,7 +684,27 @@ More...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/30</span><a class="archive-post-title" href= "/2018/09/30/hello-world/" >Hello World</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Spring整体架构/" >Spring整体架构</a>
         </li>
     
     </div>
@@ -503,9 +712,11 @@ More...
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="Start"><span class="iconfont-archer">&#xe606;</span>Start</span>
+        <span class="sidebar-tag-name" data-tags="Spring"><span class="iconfont-archer">&#xe606;</span>Spring</span>
     
-        <span class="sidebar-tag-name" data-tags="Test"><span class="iconfont-archer">&#xe606;</span>Test</span>
+        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -540,7 +751,7 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="TestCat"><span class="iconfont-archer">&#xe60a;</span>TestCat</span>
+        <span class="sidebar-category-name" data-categories="技术源码"><span class="iconfont-archer">&#xe60a;</span>技术源码</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
