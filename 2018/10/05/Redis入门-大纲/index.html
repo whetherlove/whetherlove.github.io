@@ -279,12 +279,14 @@ height:40vh;
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
     
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
 </div>
 
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">895</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">979</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -413,7 +415,8 @@ height:40vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h2 id="Redis-是什么？"><a href="#Redis-是什么？" class="headerlink" title="Redis 是什么？"></a>Redis 是什么？</h2><p>通常而言目前的数据库分类有几种，包括 SQL/NSQL，关系数据库，键值数据库等等 等，分类的标准也不以，Redis本质上也是一种键值数据库的，但它在保持键值数据库简单快捷特点的同时，又吸收了部分关系数据库的优点。从而使它的位置处于关系数据库和键值数 据库之间。Redis不仅能保存Strings类型的数据，还能保存Lists类型（有序）和Sets类型（无序）的数据，而且还能完成排序（SORT） 等高级功能，在实现INCR，SETNX等功能的时候，保证了其操作的原子性，除此以外，还支持主从复制等功能。</p>
+        <p><strong>入门系列主要是为了让看过的人对这门技术有个初步了解，被问及相关问题有话可说。系列的重点在于对概念与理论的一些描述，也会设计一些简单的编码。想要这门技术的大神，光看这个肯定是不够滴~</strong></p>
+<h2 id="Redis-是什么？"><a href="#Redis-是什么？" class="headerlink" title="Redis 是什么？"></a>Redis 是什么？</h2><p>通常而言目前的数据库分类有几种，包括 SQL/NSQL，关系数据库，键值数据库等等 等，分类的标准也不以，Redis本质上也是一种键值数据库的，但它在保持键值数据库简单快捷特点的同时，又吸收了部分关系数据库的优点。从而使它的位置处于关系数据库和键值数 据库之间。Redis不仅能保存Strings类型的数据，还能保存Lists类型（有序）和Sets类型（无序）的数据，而且还能完成排序（SORT） 等高级功能，在实现INCR，SETNX等功能的时候，保证了其操作的原子性，除此以外，还支持主从复制等功能。</p>
 <h2 id="Redis的优点"><a href="#Redis的优点" class="headerlink" title="Redis的优点"></a>Redis的优点</h2><p>性能极高 – Redis能支持超过 100K+ 每秒的读写频率。<br>丰富的数据类型 – Redis支持二进制案例的 Strings, Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。<br>原子 – Redis的所有操作都是原子性的，同时Redis还支持对几个操作全并后的原子性执行。<br>丰富的特性 – Redis还支持 publish/subscribe, 通知, key 过期等等特性。</p>
 <h2 id="Redis的缺点"><a href="#Redis的缺点" class="headerlink" title="Redis的缺点"></a>Redis的缺点</h2><p>是数据库容量受到物理内存的限制,不能用作海量数据的高性能读写,因此Redis适合的场景主要局限在较小数据量的高性能操作和运算上。</p>
 <h2 id="redis为什么这么快"><a href="#redis为什么这么快" class="headerlink" title="redis为什么这么快"></a>redis为什么这么快</h2><p>每秒可以处理超过 10万次读写操作，是已知性能最快的Key-Value DB。<br>三点<br>(一)纯内存操作<br>(二)单线程操作，避免了频繁的上下文切换<br>(三)采用了非阻塞I/O多路复用机制<br>假设你是一个老师，让30个学生解答一道题目，然后检查学生做的是否正确，你有下面几个选择：</p>
@@ -426,10 +429,10 @@ height:40vh;
 <ul>
 <li><a href="https://whetherlove.github.io/2018/10/05/Redis入门-大纲/">Redis入门-大纲</a></li>
 <li><a href="https://whetherlove.github.io/2018/10/05/Redis入门-基本数据类型/">Redis入门-基本数据类型</a></li>
-<li><a href="">Redis入门-高级数据类型</a></li>
-<li><a href="">Redis入门-管道与事务</a></li>
-<li><a href="">Redis入门-持久化</a></li>
-<li><a href="">Redis入门-过期策略与内存淘汰机制</a></li>
+<li><a href="https://whetherlove.github.io/2018/10/05/Redis入门-高级数据类型/">Redis入门-高级数据类型</a></li>
+<li><a href="https://whetherlove.github.io/2018/10/05/Redis入门-/管道与事务">Redis入门-管道与事务</a></li>
+<li><a href="https://whetherlove.github.io/2018/10/05/Redis入门-/持久化">Redis入门-持久化</a></li>
+<li><a href="https://whetherlove.github.io/2018/10/05/Redis入门-/过期策略与内存淘汰机制">Redis入门-过期策略与内存淘汰机制</a></li>
 <li><a href="">Redis入门-缓存</a></li>
 <li><a href="">Redis入门-消息队列</a></li>
 <li><a href="">Redis入门-数据库</a></li>
@@ -459,7 +462,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-大纲/">https://whetherlove.github.io/2018/10/05/Redis入门-大纲/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-大纲/">October 5th 2018, 1:04:17 pm</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-大纲/">October 6th 2018, 6:29:37 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-大纲/">October 6th 2018, 8:44:36 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -468,16 +471,16 @@ height:40vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/10/05/Redis入门-基本数据类型/" title= "Redis入门-基本数据类型">
-                    <div class="nextTitle">Redis入门-基本数据类型</div>
+                <a href= "/2018/10/05/Redis入门-管道与事务/" title= "Redis入门-管道与事务">
+                    <div class="nextTitle">Redis入门-管道与事务</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/10/05/Spring中的bean/" title= "Spring中的bean">
-                    <div class="prevTitle">Spring中的bean</div>
+                <a href= "/2018/10/05/Redis入门-基本数据类型/" title= "Redis入门-基本数据类型">
+                    <div class="prevTitle">Redis入门-基本数据类型</div>
                 </a>
             
         </li>
@@ -727,9 +730,55 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 9
+        Total : 13
         </div>
         <!-- search  -->
         
@@ -745,12 +794,32 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-基本数据类型/" >Redis入门-基本数据类型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
         </li>
     
     
@@ -801,6 +870,8 @@ top:40vh;
     
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
+        <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
+    
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -836,9 +907,9 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="技术源码"><span class="iconfont-archer">&#xe60a;</span>技术源码</span>
     
-        <span class="sidebar-category-name" data-categories="技术资料"><span class="iconfont-archer">&#xe60a;</span>技术资料</span>
-    
         <span class="sidebar-category-name" data-categories="技术入门"><span class="iconfont-archer">&#xe60a;</span>技术入门</span>
+    
+        <span class="sidebar-category-name" data-categories="技术资料"><span class="iconfont-archer">&#xe60a;</span>技术资料</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
