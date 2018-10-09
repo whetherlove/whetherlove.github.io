@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>IOC相关类梳理 · 疯狂的小鸡</title>
+    <title>Redis集群-Cluster实现原理 · 疯狂的小鸡</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -228,7 +228,7 @@
                 <a href="/" >疯狂的小鸡</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">IOC相关类梳理</a>
+                <a href="#" class="post-name">Redis集群-Cluster实现原理</a>
             </div>
     </div>
     
@@ -258,7 +258,7 @@ height:40vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            IOC相关类梳理
+            Redis集群-Cluster实现原理
             <!-- 404 -->
             
         </h1>
@@ -277,23 +277,21 @@ height:40vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
     
 </div>
 
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">798</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">3k</span>阅读时长: <span class="post-count reading-time">10 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2018/10/01</span>
+                    <span class="post-intro-time">2018/10/07</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -417,23 +415,128 @@ height:40vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h2 id="BeanFactory"><a href="#BeanFactory" class="headerlink" title="BeanFactory"></a>BeanFactory</h2><p>首先谈谈BeanFactory。BeanFactory是IoC容器最顶端的接口，它定义了IoC容器的基本形式与规范。例如，接口中设计了getBean()方法。这个方法是IoC容器的API的主要方法，用来取得容器中管理的bean。另外还定义了一些bean类型相关的方法，例如isSingleton(), isPrototype()，getType()等。</p>
-<p>BeanFactory接口下面主要有两条设计线路。</p>
-<h2 id="DefaultListableBeanFactory"><a href="#DefaultListableBeanFactory" class="headerlink" title="DefaultListableBeanFactory"></a>DefaultListableBeanFactory</h2><p><img src="/images/DefaultListableBeanFactory.png" alt="DefaultListableBeanFactory继承树"><br>第一条线路的核心是DefaultListableBeanFactory这个类。在spring中，这个类是作为一个默认的具有完整功能的IoC容器来使用的。这个类持有一个<code>private final Map&lt;String, BeanDefinition&gt; beanDefinitionMap = new ConcurrentHashMap(256);</code>用来存放spring中已经注册了的bean。注册过程是通过实现BeanDefinitionRegistry接口实现的。</p>
-<p>可以看到，在beanDefinitionMap中，key为String类型，即bean的name。value为BeanDefinition。BeanDefinition是spring中一个很重要的类，在之后的文章中会详细提到。目前可以简单理解为spring对各种对象类型的统一封装。<br>在3.1以前，spring通过继承这个类来实现额外功能。例如XmlBeanFactory继承这个类，使用Resource对象读取XML文件进行解析。在3.1以后XmlBeanFactory这个类被弃用， 现在用ClassPathXmlApplicationContext这个类接续XML。</p>
-<h2 id="ApplicationContext"><a href="#ApplicationContext" class="headerlink" title="ApplicationContext"></a>ApplicationContext</h2><p><img src="/images/ApplicationContext.png" alt="ApplicationContext继承树"><br>第二条线的核心是ApplicationContext这个接口。ApplicationContext可以说是一个高级形态的IoC容器。它在IOC容器的基本功能上添加了一些附加功能。例如它继承了MessageSource接口用于支持国际化，ResourcePatternResolver接口用于从不同途径获取BeanDefinition。 正式由于ApplicationContext提供了一系列附加功能，与BeanFactory相比，对它的使用是一种面向框架的风格，在3.1以后，spring统一使用ApplicationContext作为IOC容器的基本形式。</p>
-<p>这里先看一下ApplicationContext下游的继承关系。ApplicationContext下游直到 AbstractApplicationContext这个抽象类为止都只是单线。这个抽象类主要是实现了上游的接口方法。从该抽象类开始有两条线。第一条线是AbstractRefreshableApplicationContext类及其子类，这些类主要是以refreshable或资源类型名打头。另一条线是GenericApplicationContext类及其子类，主要以generic或static打头。</p>
-<p>这两条线的主要区别在于对refresh()方法的处理。refresh()方法定义在上游AbstractApplicationContext类中，是一个模板方法。refresh()方法的主要作用是完成对IoC容器的初始化。同时也是spring响应hot reloading的底层方法。在AbstractRefreshableApplicationContext类及其子类中，持有一个private DefaultListableBeanFactory beanFactory。每次调用refresh()方法时，都会通过refreshBeanFactory()方法生成一个新beanFacory。而在GenericApplicationContext类及其子类中，持有一个private final DefaultListableBeanFactory beanFactory。该容器在类加载时即确定。在这条线的类中，refresh()方法能被调用一次。因而不能响应hot reloading。这条线的应用场景很少，在spring官方API中，也强调了如果想自定义ApplicationContext，最好继承AbstractRefreshableApplicationContext类。</p>
-<p>从在AbstractRefreshableApplicationContext类再往下走，则是一些具体的实现类，这些类往往只需要实现与这个类设计具体相关的功能。例如我们最熟悉的ClassPathXmlApplicationContext类。它只需要实现XML读取与解析功能即可。</p>
+        <h2 id="心跳机制"><a href="#心跳机制" class="headerlink" title="心跳机制"></a>心跳机制</h2><p>Cluster中的每个节点都维护一份在自己看来当前整个集群的状态，主要包括：</p>
+<ul>
+<li><p>当前集群状态</p>
+</li>
+<li><p>集群中各节点所负责的slots信息，及其migrate状态</p>
+</li>
+<li><p>集群中各节点的master-slave状态</p>
+</li>
+<li><p>集群中各节点的存活状态及不可达投票</p>
+</li>
+</ul>
+<p>当集群状态变化时，如新节点加入、slot迁移、节点宕机、slave提升为新Master，我们希望这些变化尽快的被发现，传播到整个集群的所有节点并达成一致。节点之间相互的心跳（PING，PONG，MEET）及其携带的数据是集群状态传播最主要的途径。</p>
+<h3 id="心跳时机"><a href="#心跳时机" class="headerlink" title="心跳时机"></a>心跳时机</h3><p>Redis节点会记录其向每一个节点上一次发出ping和收到pong的时间，心跳发送时机与这两个值有关。</p>
+<p>通过下面的方式既能保证及时更新集群状态，又不至于使心跳数过多：</p>
+<ul>
+<li><p>每次Cron向所有未建立链接的节点发送ping或meet</p>
+</li>
+<li><p>每1秒从所有已知节点中随机选取5个，向其中上次收到pong最久远的一个发送ping</p>
+</li>
+<li><p>每次Cron向收到pong超过timeout/2的节点发送ping</p>
+</li>
+<li><p>收到ping或meet，立即回复pong</p>
+</li>
+</ul>
+<h3 id="心跳数据"><a href="#心跳数据" class="headerlink" title="心跳数据"></a>心跳数据</h3><p>Header，发送者自己的信息</p>
+<ul>
+<li>所负责slots的信息</li>
+<li>主从信息</li>
+<li>ip port信息</li>
+<li>状态信息</li>
+</ul>
+<p>Gossip，发送者所了解的部分其他节点的信息</p>
+<ul>
+<li>ping_sent, pong_received</li>
+<li>ip, port信息</li>
+<li>状态信息，比如发送者认为该节点已经不可达，会在状态信息中标记其为PFAIL或FAIL</li>
+</ul>
+<h3 id="心跳处理"><a href="#心跳处理" class="headerlink" title="心跳处理"></a>心跳处理</h3><h4 id="新节点加入"><a href="#新节点加入" class="headerlink" title="新节点加入"></a>新节点加入</h4><p>向已知结点发送meet包加入集群。从收到的回复pong包中的gossip得到未知的其他节点。循环上述过程，直到最终加入集群。</p>
+<h4 id="Slots信息"><a href="#Slots信息" class="headerlink" title="Slots信息"></a>Slots信息</h4><p>判断发送者声明的slots信息，跟本地记录的是否有不同。如果不同，且发送者epoch较大，更新本地记录。如果不同，且发送者epoch小，发送Update信息通知发送者。</p>
+<h4 id="Master-slave信息"><a href="#Master-slave信息" class="headerlink" title="Master slave信息"></a>Master slave信息</h4><p>发现发送者的master、slave信息变化，更新本地状态。</p>
+<h3 id="节点Fail探测"><a href="#节点Fail探测" class="headerlink" title="节点Fail探测"></a>节点Fail探测</h3><p>详见宕机处理</p>
+<h3 id="广播"><a href="#广播" class="headerlink" title="广播"></a>广播</h3><p>当需要发布一些非常重要需要立即送达的信息时，上述心跳加Gossip的方式就显得捉襟见肘了，这时就需要向所有集群内机器的广播信息，使用广播发的场景：</p>
+<ul>
+<li><p>节点的Fail信息：当发现某一节点不可达时，探测节点会将其标记为PFAIL状态，并通过心跳传播出去。当某一节点发现这个节点的PFAIL超过半数时修改其为FAIL并发起广播。</p>
+</li>
+<li><p>Failover Request信息：slave尝试发起FailOver时广播其要求投票的信息。</p>
+</li>
+<li><p>新Master信息：Failover成功的节点向整个集群广播自己的信息。</p>
+</li>
+</ul>
+<h2 id="宕机处理"><a href="#宕机处理" class="headerlink" title="宕机处理"></a>宕机处理</h2><h3 id="节点失效检测"><a href="#节点失效检测" class="headerlink" title="节点失效检测"></a>节点失效检测</h3><p>1）当一个节点向另一个节点发送 PING 命令，但是目标节点未能在给定的时限内返回 PONG 命令时，那么发送命令的节点会将目标节点标记为PFAIL （possible failure，可能已失效）。</p>
+<p>2）等待 PING 命令回复的时限称为“节点超时时限（node timeout）”，是一个节点选项（node-wise setting）。</p>
+<p>3）当节点接收到其他节点发来的ping时，它会读取gossip包，记下那些被其他节点标记为失效的节点。这称为失效报告（failure report）。失效报告有过期时限，过期的失效报告会被移除，所以主节点要将某个节点标记为 FAIL 的话，必须以最近接收到的失效报告作为根据。</p>
+<p>4）如果节点已经将某个节点标记为 PFAIL ，并且根据节点所收到的失效报告显式，集群中的大部分其他主节点也认为那个节点进入了失效状态，那么节点会将那个失效节点的状态标记为 FAIL 。</p>
+<p>Gossip的存在使得集群状态的改变可以更快的达到整个集群。每个心跳包中会包含多个Gossip包，那么多少个才是合适的呢，redis的选择是N/10，其中N是节点数，这样可以保证在PFAIL投票的过期时间内，节点可以收到80%机器关于失败节点的gossip，从而使其顺利进入FAIL状态。</p>
+<p>5）一旦某个节点被标记为 FAIL ，关于这个节点已失效的信息就会被广播到整个集群，所有接收到这条信息的节点都会将失效节点标记为 FAIL 。</p>
+<h3 id="节点宕机处理"><a href="#节点宕机处理" class="headerlink" title="节点宕机处理"></a>节点宕机处理</h3><p>一旦某个从节点进入FAIL状态，对该节点的直接访问将被拒绝Connection Refused。</p>
+<p>一旦某个主节点进入 FAIL 状态，如果这个主节点有一个或多个从节点存在，则会进入从节点选举。</p>
+<h3 id="集群FAIL判断"><a href="#集群FAIL判断" class="headerlink" title="集群FAIL判断"></a>集群FAIL判断</h3><ul>
+<li><p>某个主节点和所有从节点全部挂掉，我们集群就进入faill状态。</p>
+</li>
+<li><p>如果集群超过半数以上master挂掉，无论是否有slave，集群进入fail状态。</p>
+</li>
+<li><p>如果集群任意master挂掉,且当前master没有slave.集群进入fail状态。</p>
+</li>
+</ul>
+<h2 id="从节点选举"><a href="#从节点选举" class="headerlink" title="从节点选举"></a>从节点选举</h2><h3 id="集群currentEpoch"><a href="#集群currentEpoch" class="headerlink" title="集群currentEpoch"></a>集群currentEpoch</h3><p>Redis Cluster使用了类似于Raft算法“term”（任期）的概念，那么在redis Cluster中term称为epoch，用来给events增量版本号。当多个nodes提供了信息有冲突时，它可以作为node来知道哪个状态是最新的。currentEpoch为一个64位无签名数字。</p>
+<p>在集群node创建时，master和slave都会将各自的currentEpoch设置为0，每次从其他node接收到数据包时，如果发现发送者的epoch值比自己的大，那么当前node将自己的currentEpoch设置为发送者的epoch。由此，最终所有的nodes都会认同集群中最大的epoch值；当集群的状态变更，或者node为了执行某个行为需求agreement时，都将需要epoch（传递或者比较）。</p>
+<h3 id="configEpoch"><a href="#configEpoch" class="headerlink" title="configEpoch"></a>configEpoch</h3><p>每个master总会在ping、pong数据包中携带自己的configEpoch以及它持有的slots列表。新创建的node，其configEpoch为0。slaves在ping、pong数据包中也会携带自己的configEpoch信息，不过这个epoch为它与master在最近一次数据交换时，会更新为master的configEpoch。</p>
+<p>每当节点发现configEpoch值变更时，都会将新值写入nodes.conf文件，当然currentEpoch也也是如此。这两个变量在写入文件后会伴随磁盘的fsync，持久写入。严格来说，集群中所有的master都持有唯一的configEpoch值。同一组master-slaves持有相同的configEpoch。</p>
+<h3 id="选举准备"><a href="#选举准备" class="headerlink" title="选举准备"></a>选举准备</h3><p>当master处于FAIL状态时，将会触发slave的选举。slaves都希望将自己提升为master，此master的所有slaves都可以开启选举，不过最终只有一个slave获胜。<br>只有满足以下条件的slave拥有被选举权：</p>
+<ul>
+<li><p>这个节点是已下线主节点的从节点。</p>
+</li>
+<li><p>已下线主节点负责处理的槽数量非空。</p>
+</li>
+<li><p>从节点的数据被认为是可靠的，也即是，主从节点之间的复制连接（replication link）的断线时长不能超过节点超时时限（node timeout）乘以REDIS_CLUSTER_SLAVE_VALIDITY_MULT 常量得出的积。</p>
+</li>
+</ul>
+<p>一般来说，满足上述条件的从节点不会立即发起选举，而是会等待一个随机时间，然后才尝试选举，等待的时间：<br>DELAY = 500ms + random(0 ~ 500ms) + SLAVE_RANK * 1000ms</p>
+<p>一定的延迟确保我们等待FAIL状态在集群中传播，否则其他masters或许尚未意识到FAIL状态，可能会拒绝投票。延迟的时间是随机的，这用来“去同步”（desynchronize），避免slaves同时开始选举。</p>
+<p>SLAVE_RANK表示此slave已经从master复制数据的总量的rank。当master失效时，slaves之间交换消息以尽可能的构建rank，持有replication offset最新的rank为0，第二最新的为1，依次轮推。由公式可见，持有最新数据的slave将会首先发起选举（理论上）。 如果一个持有较小rank的slave选举失败，其他slaves将会稍后继续。</p>
+<h3 id="Slave发起投票请求"><a href="#Slave发起投票请求" class="headerlink" title="Slave发起投票请求"></a>Slave发起投票请求</h3><p>为了选举，第一步，就是slave自增它的currentEpoch值，然后向其他masters请求投票（需求支持，votes）。</p>
+<p>slave通过向其他masters传播“FAILOVER_AUTH_REQUEST”数据包，然后最长等待2倍的NODE_TIMEOUT时间，来接收反馈。</p>
+<p>一旦一个master向此slave投票，将会响应“FAILOVER_AUTH_ACK”，此后在2 * NODE_TIMOUT时间内，它将不会向同一个master的slaves投票；虽然这对保证安全上没有必要，但是对避免多个slaves同时选举时有帮助的。slave将会丢弃那些epoch值小于自己的currentEpoch的AUTH_ACK反馈，即不会对上一次选举的投票计数。</p>
+<p>一旦此slave获取了大多数master的ACKs，它将在此次选举中获胜；否则如果大多数master不可达（在2 * NODE_TIMEOUT）或者投票额不足，那么它的选举将会被中断，那么其他的slave将会继续尝试。</p>
+<h3 id="Master响应投票请求"><a href="#Master响应投票请求" class="headerlink" title="Master响应投票请求"></a>Master响应投票请求</h3><p>当Master接收到slave的“FAILOVER_AUTH_REQUEST”请求后，开始投票。</p>
+<p>master并不会尽力选举最合适的slave， 只是批准主动投票者。最合适的slave应该在其他slaves之前，首先发起选举。当master拒绝一个slave投票，并不会发出一个“否决”响应，而是简单的忽略。</p>
+<p>Mater投票规则：</p>
+<ul>
+<li><p>此master只会对指定的epoch投票一次，并且拒绝对旧的epoch投票：每个master都持有一个lastVoteEpoch，将会拒绝AUTH_REQUEST中currentEpoch比lastVoteEpoch小的请求。当master响应投票时，将会把lastVoteEpoch保存在磁盘中。</p>
+</li>
+<li><p>此slave的master处于FAIL状态时，master才会投票。</p>
+</li>
+<li><p>如果slave的currentEpoch比此master的currentEpoch小，那么AUTH_REQUEST将会被忽略。因为master只会响应那些与自己的currentEpoch相等的请求。</p>
+</li>
+<li><p>master在2 * NODE_TIMEOUT超时之前，不会对同一个master的slave再次投票。这并不是严格需要，因为也不太可能两个slave在相同的epoch下同时赢得选举。不过，它确保当一个slave选举成功后，它（slave）有一段缓冲时间来通知其他的slaves，避免另一个slave赢得了新的一轮的选择，避免不必要的二次failover。</p>
+</li>
+<li><p>slave发送的configEpoch是其master的，还包括其master持有的slots；master不会向持有相同slots、但configEpoch只较低的slave投票。</p>
+</li>
+</ul>
+<h3 id="选举成功"><a href="#选举成功" class="headerlink" title="选举成功"></a>选举成功</h3><p>一旦，slave选举成功，它将获取一个新的、唯一的、自增的configEpoch值，此值比集群中任何masters持有的都要大，它开始宣称自己是master，并进行一下步骤：<br>1）通过 PONG 数据包（packet）告知其他节点，这个节点现在是主节点了。</p>
+<p>2）通过 PONG 数据包告知其他节点，这个节点是一个已升级的从节点（promoted slave）。</p>
+<p>3）接管（claiming）所有由已下线主节点负责处理的哈希槽。</p>
+<p>4）显式地向所有节点广播一个 PONG 数据包，加速其他节点识别这个节点的进度，而不是等待定时的 PING / PONG 数据包。当前node不可达的那些节点，它们可以从其他节点的ping或者pong中获知信息（gossip），并重新配置。</p>
+<p>5）所有其他节点都会根据新的主节点对配置进行相应的更新，特别地：</p>
+<ul>
+<li><p>所有被新的主节点接管的槽会被更新。</p>
+</li>
+<li><p>已下线主节点的所有从节点会察觉到 PROMOTED 标志，并开始对新的主节点进行复制。</p>
+</li>
+</ul>
+<h3 id="旧master节点恢复"><a href="#旧master节点恢复" class="headerlink" title="旧master节点恢复"></a>旧master节点恢复</h3><p>旧的master（也可以为slave）离群，然后重新加入集群时，若其持有的所有slot被某一节点接管，旧master将放弃这些slots，成为空的节点；此后 将会被重新配置，成为其他新master的slave。若离群一段时间后重新加入集群，发现此前自己持有的slots已经被其他多个nodes接管， 在重新配置时，最终此旧节点上的slots将会被清空，那个窃取自己最后一个slot的node，将成为它的新master。</p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
-            <p>原文链接：<a href="https://whetherlove.github.io/2018/10/01/IOC相关类梳理/">https://whetherlove.github.io/2018/10/01/IOC相关类梳理/</a>
-            <p>发表日期：<a href="https://whetherlove.github.io/2018/10/01/IOC相关类梳理/">October 1st 2018, 3:34:45 pm</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/01/IOC相关类梳理/">October 1st 2018, 5:40:40 pm</a>
+            <p>原文链接：<a href="https://whetherlove.github.io/2018/10/07/Redis集群-Cluster实现原理/">https://whetherlove.github.io/2018/10/07/Redis集群-Cluster实现原理/</a>
+            <p>发表日期：<a href="https://whetherlove.github.io/2018/10/07/Redis集群-Cluster实现原理/">October 7th 2018, 8:52:30 am</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/07/Redis集群-Cluster实现原理/">October 9th 2018, 10:51:56 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -442,16 +545,16 @@ height:40vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/10/01/Ioc容器的初始化/" title= "IOC容器的初始化">
-                    <div class="nextTitle">IOC容器的初始化</div>
+                <a href= "/2018/10/07/Redis集群-Cluster功能简述/" title= "Redis集群-Cluster功能简述">
+                    <div class="nextTitle">Redis集群-Cluster功能简述</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/10/01/Spring整体架构/" title= "Spring整体架构">
-                    <div class="prevTitle">Spring整体架构</div>
+                <a href= "/2018/10/07/Redis入门-定时函数serverCron/" title= "Redis入门-定时函数serverCron">
+                    <div class="prevTitle">Redis入门-定时函数serverCron</div>
                 </a>
             
         </li>
@@ -579,7 +682,7 @@ top:40vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#BeanFactory"><span class="toc-number">1.</span> <span class="toc-text">BeanFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DefaultListableBeanFactory"><span class="toc-number">2.</span> <span class="toc-text">DefaultListableBeanFactory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ApplicationContext"><span class="toc-number">3.</span> <span class="toc-text">ApplicationContext</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#心跳机制"><span class="toc-number">1.</span> <span class="toc-text">心跳机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#心跳时机"><span class="toc-number">1.1.</span> <span class="toc-text">心跳时机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#心跳数据"><span class="toc-number">1.2.</span> <span class="toc-text">心跳数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#心跳处理"><span class="toc-number">1.3.</span> <span class="toc-text">心跳处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#新节点加入"><span class="toc-number">1.3.1.</span> <span class="toc-text">新节点加入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Slots信息"><span class="toc-number">1.3.2.</span> <span class="toc-text">Slots信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Master-slave信息"><span class="toc-number">1.3.3.</span> <span class="toc-text">Master slave信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点Fail探测"><span class="toc-number">1.4.</span> <span class="toc-text">节点Fail探测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广播"><span class="toc-number">1.5.</span> <span class="toc-text">广播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宕机处理"><span class="toc-number">2.</span> <span class="toc-text">宕机处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#节点失效检测"><span class="toc-number">2.1.</span> <span class="toc-text">节点失效检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点宕机处理"><span class="toc-number">2.2.</span> <span class="toc-text">节点宕机处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#集群FAIL判断"><span class="toc-number">2.3.</span> <span class="toc-text">集群FAIL判断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从节点选举"><span class="toc-number">3.</span> <span class="toc-text">从节点选举</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集群currentEpoch"><span class="toc-number">3.1.</span> <span class="toc-text">集群currentEpoch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#configEpoch"><span class="toc-number">3.2.</span> <span class="toc-text">configEpoch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选举准备"><span class="toc-number">3.3.</span> <span class="toc-text">选举准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Slave发起投票请求"><span class="toc-number">3.4.</span> <span class="toc-text">Slave发起投票请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Master响应投票请求"><span class="toc-number">3.5.</span> <span class="toc-text">Master响应投票请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选举成功"><span class="toc-number">3.6.</span> <span class="toc-text">选举成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#旧master节点恢复"><span class="toc-number">3.7.</span> <span class="toc-text">旧master节点恢复</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

@@ -357,48 +357,13 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-大纲/" >
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-管道与事务/" >
             
-                <span>Redis入门-大纲</span>
+                <span>Redis入门-管道与事务</span>
         </a>
         <div class="abstract-content">
-            入门系列主要是为了让看过的人对这门技术有个初步了解，被问及相关问题有话可说。系列的重点在于对概念与理论的一些描述，也会设计一些简单的编码。想要这门技术的大神，光看这个肯定是不够滴~
-Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQL，关系数据库，键值数据库等等 等，分类的标准也不以，Redis本质上也是一种键值数据库的，但它在保持键值数据库简单快捷特点的同时，又吸收了部分关系数据库的优点。从而使它的位置处于关系数据库和键值数 据库之间。Redis不仅能保存Strings类型的数据，还能保存Lists类型（有序）和Sets类型（无序）的数据，而且还能完成排序（SOR...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-基本数据类型/" >
-            
-                <span>Redis入门-基本数据类型</span>
-        </a>
-        <div class="abstract-content">
-            此篇文章仅从理论上介绍Redis的基本数据类型，有关各类型的具体操作，可见Redis常用命令总结
-RedisObjectRedis内部使用一个redisObject对象来表示所有的key，value。
-type代表一个value对象具体是何种数据类型，有5种基本数据类型，分别是：String、List、Set、Hash、SortedSet(ZSet)。
-encoding是不同数据类型在redis内部的存储方式，比如：type=string代表value存储的是一个普通字符串，那么对应的encoding可以是raw或者是int,如果是int则代表实际redis内部是按数值型类存储和表示这个...
+            PipelineRedis提供了批量操作命令(例如mget,mset等)，有效的节约RTT。但大部分命令是不支持批量操作的，例如要执行n次hgetall命令，并没有mhgetall存在，需要消耗n次RTT。Redis的客户端和服务端可能不是在不同的机器上。例如客户端在北京，Redis服务端在上海，两地直线距离为1300公里，那么1次RTT时间=1300×2/(300000×2/3)=13毫秒(这里假设光纤的速度为光速的2/3)，那么客户端在1秒内大约只能执行80次左右的命令，这个和Redis的高并发高吞吐背道而驰。
+Pipeline(管道)机制能改善上面这类问题,它能将一组Redis命令...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -459,12 +424,15 @@ encoding是不同数据类型在redis内部的存储方式，比如：type=strin
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Spring中的bean/" >
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-基本数据类型/" >
             
-                <span>Spring中的bean</span>
+                <span>Redis入门-基本数据类型</span>
         </a>
         <div class="abstract-content">
-            Bean的生命周期（1）当调用者调用getBean(beanName)向容器请求某一个Bean时，如果容器注册了InstantiationAwareBeanPostProcessor接口，则在实例化Bean之前，将调用接口的postProcessBeforeInstantiation()方法。（2）根据配置情况调用Bean的构造函数或工厂方法实例化Bean。（3）如果容器注册了InstantiationAwareBeanPostProcessor接口，在实例化Bean之后，调用该接口的postProcessBeforeInstantiation()方法，对实例化的对象进行一些初始化设置。...
+            此篇文章仅从理论上介绍Redis的基本数据类型，有关各类型的具体操作，可见Redis常用命令总结
+RedisObjectRedis内部使用一个redisObject对象来表示所有的key，value。
+type代表一个value对象具体是何种数据类型，有5种基本数据类型，分别是：String、List、Set、Hash、SortedSet(ZSet)。
+encoding是不同数据类型在redis内部的存储方式，比如：type=string代表value存储的是一个普通字符串，那么对应的encoding可以是raw或者是int,如果是int则代表实际redis内部是按数值型类存储和表示这个...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -475,223 +443,9 @@ encoding是不同数据类型在redis内部的存储方式，比如：type=strin
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/02/Spring常用注解/" >
-            
-                <span>Spring常用注解</span>
-        </a>
-        <div class="abstract-content">
-            bean注解开启注解创建bean&lt;context:component-scan base-package=”cn.java.*“/&gt;
-@Controller：注册一个bean到spring（一般用于Controller层）@Service:注册一个bean到spring（一般用于service层）@Repository：注册一个bean到spring（一般用于dao层）@Component （不推荐使用）：注册一个bean到spring，一般使用前三个来指示不同层的bean这四个表示作用一致,其区别是区分创建的层次,暂时没有功能上的意义。Bean的ID默认使用类名首字母小写。...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/DI的实现/" >
-            
-                <span>DI的实现</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析DI发生时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从BeanFactory类中的getBean()方法入手。
-IoC容器的初始化过程仅仅是建立了BeanDefinition的数据映射。但Bean的依赖关系尚未建立。 依赖注入的触发时机有可以分为两类。对于懒加载的对象，依赖注入发生在用户第一次调用getBean()向容器索要bean时。对于非懒加载对象则是发生在容器初始化时。
-doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的地方，他的实现从AbstractBeanFactory类看起。可以看到，实际获取bea...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/AOP的实现/" >
-            
-                <span>AOP的实现</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析AOP实现中的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从ProxyFactoryBean类中的getObject()方法入手。
-spring与AOP有关的模块有2个，一个是spring-aop, 这是spring自己的aop实现，另一个是spring-aspect，这是利用 aspectJ的aop实现。这两者最大的区别在于Spring中AOP是基于JDK动态代理，而AspectJ是基于字节码操作。这篇文章主要介绍基于JDK动态代理的实现。
-先回顾一下代理模式。代理模式给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用。代理对象可以...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/Ioc容器的初始化/" >
-            
-                <span>IOC容器的初始化</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析IOC容器的初始化时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从AbstractApplicationContext类中的refresh()方法入手。
-IoC容器的初始化是由refresh()方法来完成的。这个方法标志着Ioc容器的正式启动。这个方法主要执行三个功能。也就是BeanDefinition的定位、载入和注册。事实上，这个方法实际上应用了模板方法的设计模式，定义了一系列功能，具体的功能实现由子类完成。
-定位定位分两步，第一步是获取Resource。AbstractApplicationContext由于继承了DefaultReso...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/IOC相关类梳理/" >
-            
-                <span>IOC相关类梳理</span>
-        </a>
-        <div class="abstract-content">
-            BeanFactory首先谈谈BeanFactory。BeanFactory是IoC容器最顶端的接口，它定义了IoC容器的基本形式与规范。例如，接口中设计了getBean()方法。这个方法是IoC容器的API的主要方法，用来取得容器中管理的bean。另外还定义了一些bean类型相关的方法，例如isSingleton(), isPrototype()，getType()等。
-BeanFactory接口下面主要有两条设计线路。
-DefaultListableBeanFactory第一条线路的核心是DefaultListableBeanFactory这个类。在spring中，这个类是作为一个默...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/Spring整体架构/" >
-            
-                <span>Spring整体架构</span>
-        </a>
-        <div class="abstract-content">
-            spring框架是一个分层架构，它包含一系列的功能要素，并被分为大约20个模块。
-Core ContainerCore Container(核心容器)包含有Core、Beans、Context和Expression Language模块。Core和Beans模块是框架的基础部分，提供IoC(转控制)和依赖注入特性。这里的基础概念是BeanFactory，它提供对Factory模式的经典实现来消除对程序性单例模式的需要，并真正地允许你从程序逻辑中分离出依赖关系和配置。
-CoreCore模块主要包含Spring框架基本的核心工具类。
-BeansBeans模块是所有应用都要用到的，它包含访问配...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
     
 </div>
 
@@ -702,7 +456,7 @@ BeansBeans模块是所有应用都要用到的，它包含访问配...
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/2018/10/">&#60; PREV</a><a class="page-number" href="/archives/2018/10/">1</a><span class="page-number current">2</span>
+        <a class="extend prev" rel="prev" href="/categories/技术入门/">&#60; PREV</a><a class="page-number" href="/categories/技术入门/">1</a><span class="page-number current">2</span>
     </nav>
     
 </main>

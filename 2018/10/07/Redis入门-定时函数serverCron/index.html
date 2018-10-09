@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>疯狂的小鸡</title>
+    <title>Redis入门-定时函数serverCron · 疯狂的小鸡</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -214,12 +214,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >疯狂的小鸡</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Redis入门-定时函数serverCron</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>疯狂的小鸡</a>
 </header>
@@ -231,24 +242,77 @@
 
 
 
+
+height:40vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            Redis入门-定时函数serverCron
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.5k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/10/07</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -349,362 +413,96 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-大纲/" >
-            
-                <span>Redis入门-大纲</span>
-        </a>
-        <div class="abstract-content">
-            入门系列主要是为了让看过的人对这门技术有个初步了解，被问及相关问题有话可说。系列的重点在于对概念与理论的一些描述，也会设计一些简单的编码。想要这门技术的大神，光看这个肯定是不够滴~
-Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQL，关系数据库，键值数据库等等 等，分类的标准也不以，Redis本质上也是一种键值数据库的，但它在保持键值数据库简单快捷特点的同时，又吸收了部分关系数据库的优点。从而使它的位置处于关系数据库和键值数 据库之间。Redis不仅能保存Strings类型的数据，还能保存Lists类型（有序）和Sets类型（无序）的数据，而且还能完成排序（SOR...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>Redis将serverCron作为时间事件来运行，从而确保它每隔一段时间就会自动运行一次，又因为serverCron需要在Redis服务器运行期间一直定期运行，所以它是一个循环时间事件： serverCron 会一直定期执行，直到服务器关闭为止。</p>
+<p>在 Redis 2.6 版本中， 程序规定 serverCron 每秒运行  10 次， 平均每  100 毫秒运行一次。从 Redis 2.8 开始，用户可以通过修改 hz 选项来调整  serverCron的每秒执行次数。</p>
+<p>redis的serverCron函数，执行期间需要做11件事：</p>
+<h3 id="更新服务器时间缓存"><a href="#更新服务器时间缓存" class="headerlink" title="更新服务器时间缓存"></a>更新服务器时间缓存</h3><p>redis中有许多功能要获取系统当前时间，则需要调用系统接口查询时间，这样比较耗时，因此redis在结构体中用unixtime、mstime属性，保存了当前时间，并且定时更新这个值。前者是秒级unix时间戳，后者是毫秒级unix时间戳。但是，由于每100毫秒才更新，因而这两个值只会用在打印日志、更新服务器LRU时钟、决定是否进行持久化任务、计算服务器上线时间等，精度要求不高的地方使用。对于键过期时间、慢查询日志等，服务器会再次进行系统时间调用，获取最精确的时间。</p>
+<h3 id="更新lru时间"><a href="#更新lru时间" class="headerlink" title="更新lru时间"></a>更新lru时间</h3><p>lru记录的是服务器最后一次被访问的时间，是用于服务器的计算空转时长，用属性lruclock进行存储。默认情况下，每10秒更新一次。另外，每个redis对象也存了一个lru，保存的是该对象最后一次被被访问的时间。当要计算redis对象的空转时间，则会用服务器的lru减去redis对象的lru，获得的结果即对象的空转时长。在redis客户端，用命令objectidletime key，可以查看该key的空转时长，返回结果是以秒为单位。由于redis每10秒更新一次服务器的最后访问时间，因此不是很精确。</p>
+<h3 id="更新服务器每秒执行命令数"><a href="#更新服务器每秒执行命令数" class="headerlink" title="更新服务器每秒执行命令数"></a>更新服务器每秒执行命令数</h3><p>这个不是通过扫描全部的键，而是采用抽样的方式确定的结果。每100毫秒1次，随机抽取一些键，查看最近1秒是否有操作，来确定最近1秒的操作次数。接着，会将这个值，与上一次的结果，取平均值，作为本次计算的每秒执行命令数。在存入结构体中，供下次取平均值使用。</p>
+<h3 id="更新服务器内存峰值"><a href="#更新服务器内存峰值" class="headerlink" title="更新服务器内存峰值"></a>更新服务器内存峰值</h3><p>redis服务器中，用stat_peak_memory记录服务器内存峰值。每次执行serverCron函数，会查看当前内存使用量，并且与stat_peak_memory比较，如果超过这个值，就更新这个属性。</p>
+<h3 id="处理sigterm信号"><a href="#处理sigterm信号" class="headerlink" title="处理sigterm信号"></a>处理sigterm信号</h3><p>redis服务器，用属性shutdown_asap记录当前的结果，0是不用进行操作，1的话是要求服务器尽快关闭。<br>因此，服务器关闭命令shutdown执行，并不会立即关闭服务器，而是将服务器的shutdown_asap属性置成1，当下一次serverCron读取时，就会拒绝新的请求，完成当前正在执行的命令后，开始持久化相关的操作，结束持久化后才会关闭服务器。</p>
+<h3 id="管理客户端资源"><a href="#管理客户端资源" class="headerlink" title="管理客户端资源"></a>管理客户端资源</h3><ul>
+<li><p>客户端很长时间没有和服务器响应，服务器认为该客户端超时，则会断开和该客户端的连接。</p>
+</li>
+<li><p>当客户端在上一次执行命令请求后，输入缓冲区超过规定的长度，程序会释放输入缓冲区，并创建一个默认大小的缓冲区，防止缓冲区过分消耗。</p>
+</li>
+<li><p>关闭输出缓冲区超出大小限制的客户端。</p>
+</li>
+</ul>
+<h3 id="管理数据库资源"><a href="#管理数据库资源" class="headerlink" title="管理数据库资源"></a>管理数据库资源</h3><p>主要是检查键是否过期，并且按照配置的策略，删除过期的键。如懒惰删除、定期删除等。</p>
+<h3 id="执行被延迟的bgrewriteaof命令"><a href="#执行被延迟的bgrewriteaof命令" class="headerlink" title="执行被延迟的bgrewriteaof命令"></a>执行被延迟的bgrewriteaof命令</h3><p>redis用属性aof_rewrite_scheduled记录是否有延迟的bgrewriteaof命令。<br>当执行bgsave命令期间，如果接收到bgrewriteaof命令，不会立即执行该命令，而是会将属性aof_rewrite_scheduled置成1。每次执行serverCron函数执行时，发现属性aof_rewrite_scheduled是1，会检查当前是否在执行bgsave命令或bgrewriteaof命令，如果没有在执行这两个命令，则会执行bgrewriteaof命令。</p>
+<h3 id="检查持久化操作的运行状态"><a href="#检查持久化操作的运行状态" class="headerlink" title="检查持久化操作的运行状态"></a>检查持久化操作的运行状态</h3><p>redis服务器分别用rdb_child_pid和aof_child_pid属性，记录rdb和aof的子进程号（即子进程pid），如果没有在执行相应的持久化，则值是-1。</p>
+<h4 id="有一个值不是-1时"><a href="#有一个值不是-1时" class="headerlink" title="有一个值不是-1时"></a>有一个值不是-1时</h4><p>每次服务器检查这两个属性，发现有一个不是-1，则会检查子进程是否有信号发来服务器进程。如果有信号，表示rdb完成或aof重写完毕，服务器会进行后续的操作，比如用新的rdb、aof替换旧的相应文件。如果没信号，表示持久化还没完成，程序不做动作。</p>
+<h4 id="两个值都不是-1时"><a href="#两个值都不是-1时" class="headerlink" title="两个值都不是-1时"></a>两个值都不是-1时</h4><p>两个值都不是-1，会进行三个检查：</p>
+<ul>
+<li>如果bgrewriteaof命令有存在延迟（即上述aof_rewrite_scheduled值是1），因为两个属性都是 -1，表示当前没有在持久化，则redis服务器会开始aof的重写。</li>
+<li>检查服务器是否满足bgsave条件，如果满足，因为两个属性都是 -1，则会开始执行bgsave。</li>
+<li>检查服务器是否满足bgrewriteaof条件，如果满足，因为两个属性都是 -1，则会开始执行bgrewriteaof。</li>
+</ul>
+<h3 id="将aof缓冲区内容写入aof文件"><a href="#将aof缓冲区内容写入aof文件" class="headerlink" title="将aof缓冲区内容写入aof文件"></a>将aof缓冲区内容写入aof文件</h3><p>如果开启aof，redis会记录每个写命令，写入aof缓冲区，但是为了减少磁盘I/O，不会立即写入aof文件。而是在执行serverCron函数时，才会开始将缓冲区内容写入aof文件。</p>
+<h3 id="记录执行一次serverCron"><a href="#记录执行一次serverCron" class="headerlink" title="记录执行一次serverCron"></a>记录执行一次serverCron</h3><p>redis用属性cronloops保存serverCron函数执行的次数。当执行一次serverCron，则会将属性值加1。这个值目前的作用，是在主从复制情况下，会有一个条件是，每执行n次serverCron，则执行一次指定代码。</p>
 
-            
-        </div>
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-基本数据类型/" >
-            
-                <span>Redis入门-基本数据类型</span>
-        </a>
-        <div class="abstract-content">
-            此篇文章仅从理论上介绍Redis的基本数据类型，有关各类型的具体操作，可见Redis常用命令总结
-RedisObjectRedis内部使用一个redisObject对象来表示所有的key，value。
-type代表一个value对象具体是何种数据类型，有5种基本数据类型，分别是：String、List、Set、Hash、SortedSet(ZSet)。
-encoding是不同数据类型在redis内部的存储方式，比如：type=string代表value存储的是一个普通字符串，那么对应的encoding可以是raw或者是int,如果是int则代表实际redis内部是按数值型类存储和表示这个...
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
+            <p>原文链接：<a href="https://whetherlove.github.io/2018/10/07/Redis入门-定时函数serverCron/">https://whetherlove.github.io/2018/10/07/Redis入门-定时函数serverCron/</a>
+            <p>发表日期：<a href="https://whetherlove.github.io/2018/10/07/Redis入门-定时函数serverCron/">October 7th 2018, 8:52:30 am</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/07/Redis入门-定时函数serverCron/">October 8th 2018, 9:09:48 am</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >
-            
-                <span>Redis入门-过期策略与内存淘汰机制</span>
-        </a>
-        <div class="abstract-content">
-            过期策略定期删除定期删除，redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
-惰性删除惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
-为什么不用定时删除策略?定时删除,用一个定时器来负责监视key,过期则自动删除。虽然内存及时释放，但是十分消耗CPU资源。在大...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Spring中的bean/" >
-            
-                <span>Spring中的bean</span>
-        </a>
-        <div class="abstract-content">
-            Bean的生命周期（1）当调用者调用getBean(beanName)向容器请求某一个Bean时，如果容器注册了InstantiationAwareBeanPostProcessor接口，则在实例化Bean之前，将调用接口的postProcessBeforeInstantiation()方法。（2）根据配置情况调用Bean的构造函数或工厂方法实例化Bean。（3）如果容器注册了InstantiationAwareBeanPostProcessor接口，在实例化Bean之后，调用该接口的postProcessBeforeInstantiation()方法，对实例化的对象进行一些初始化设置。...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/02/Spring常用注解/" >
-            
-                <span>Spring常用注解</span>
-        </a>
-        <div class="abstract-content">
-            bean注解开启注解创建bean&lt;context:component-scan base-package=”cn.java.*“/&gt;
-@Controller：注册一个bean到spring（一般用于Controller层）@Service:注册一个bean到spring（一般用于service层）@Repository：注册一个bean到spring（一般用于dao层）@Component （不推荐使用）：注册一个bean到spring，一般使用前三个来指示不同层的bean这四个表示作用一致,其区别是区分创建的层次,暂时没有功能上的意义。Bean的ID默认使用类名首字母小写。...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/DI的实现/" >
-            
-                <span>DI的实现</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析DI发生时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从BeanFactory类中的getBean()方法入手。
-IoC容器的初始化过程仅仅是建立了BeanDefinition的数据映射。但Bean的依赖关系尚未建立。 依赖注入的触发时机有可以分为两类。对于懒加载的对象，依赖注入发生在用户第一次调用getBean()向容器索要bean时。对于非懒加载对象则是发生在容器初始化时。
-doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的地方，他的实现从AbstractBeanFactory类看起。可以看到，实际获取bea...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/AOP的实现/" >
-            
-                <span>AOP的实现</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析AOP实现中的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从ProxyFactoryBean类中的getObject()方法入手。
-spring与AOP有关的模块有2个，一个是spring-aop, 这是spring自己的aop实现，另一个是spring-aspect，这是利用 aspectJ的aop实现。这两者最大的区别在于Spring中AOP是基于JDK动态代理，而AspectJ是基于字节码操作。这篇文章主要介绍基于JDK动态代理的实现。
-先回顾一下代理模式。代理模式给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用。代理对象可以...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/Ioc容器的初始化/" >
-            
-                <span>IOC容器的初始化</span>
-        </a>
-        <div class="abstract-content">
-            本文章着重分析IOC容器的初始化时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从AbstractApplicationContext类中的refresh()方法入手。
-IoC容器的初始化是由refresh()方法来完成的。这个方法标志着Ioc容器的正式启动。这个方法主要执行三个功能。也就是BeanDefinition的定位、载入和注册。事实上，这个方法实际上应用了模板方法的设计模式，定义了一系列功能，具体的功能实现由子类完成。
-定位定位分两步，第一步是获取Resource。AbstractApplicationContext由于继承了DefaultReso...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/IOC相关类梳理/" >
-            
-                <span>IOC相关类梳理</span>
-        </a>
-        <div class="abstract-content">
-            BeanFactory首先谈谈BeanFactory。BeanFactory是IoC容器最顶端的接口，它定义了IoC容器的基本形式与规范。例如，接口中设计了getBean()方法。这个方法是IoC容器的API的主要方法，用来取得容器中管理的bean。另外还定义了一些bean类型相关的方法，例如isSingleton(), isPrototype()，getType()等。
-BeanFactory接口下面主要有两条设计线路。
-DefaultListableBeanFactory第一条线路的核心是DefaultListableBeanFactory这个类。在spring中，这个类是作为一个默...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码分析">源码分析</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/Spring整体架构/" >
-            
-                <span>Spring整体架构</span>
-        </a>
-        <div class="abstract-content">
-            spring框架是一个分层架构，它包含一系列的功能要素，并被分为大约20个模块。
-Core ContainerCore Container(核心容器)包含有Core、Beans、Context和Expression Language模块。Core和Beans模块是框架的基础部分，提供IoC(转控制)和依赖注入特性。这里的基础概念是BeanFactory，它提供对Factory模式的经典实现来消除对程序性单例模式的需要，并真正地允许你从程序逻辑中分离出依赖关系和配置。
-CoreCore模块主要包含Spring框架基本的核心工具类。
-BeansBeans模块是所有应用都要用到的，它包含访问配...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-</div>
-
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/10/07/Redis集群-Cluster实现原理/" title= "Redis集群-Cluster实现原理">
+                    <div class="nextTitle">Redis集群-Cluster实现原理</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/10/07/Redis入门-应用场景/" title= "Redis入门-应用场景">
+                    <div class="prevTitle">Redis入门-应用场景</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= MTAyMC80MDA0Ny8xNjU3NA==>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
     
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/2018/10/">&#60; PREV</a><a class="page-number" href="/archives/2018/10/">1</a><span class="page-number current">2</span>
-    </nav>
     
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -783,6 +581,24 @@ BeansBeans模块是所有应用都要用到的，它包含访问配...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:40vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#更新服务器时间缓存"><span class="toc-number">1.</span> <span class="toc-text">更新服务器时间缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新lru时间"><span class="toc-number">2.</span> <span class="toc-text">更新lru时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新服务器每秒执行命令数"><span class="toc-number">3.</span> <span class="toc-text">更新服务器每秒执行命令数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新服务器内存峰值"><span class="toc-number">4.</span> <span class="toc-text">更新服务器内存峰值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#处理sigterm信号"><span class="toc-number">5.</span> <span class="toc-text">处理sigterm信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#管理客户端资源"><span class="toc-number">6.</span> <span class="toc-text">管理客户端资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#管理数据库资源"><span class="toc-number">7.</span> <span class="toc-text">管理数据库资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行被延迟的bgrewriteaof命令"><span class="toc-number">8.</span> <span class="toc-text">执行被延迟的bgrewriteaof命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检查持久化操作的运行状态"><span class="toc-number">9.</span> <span class="toc-text">检查持久化操作的运行状态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#有一个值不是-1时"><span class="toc-number">9.1.</span> <span class="toc-text">有一个值不是-1时</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#两个值都不是-1时"><span class="toc-number">9.2.</span> <span class="toc-text">两个值都不是-1时</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将aof缓冲区内容写入aof文件"><span class="toc-number">10.</span> <span class="toc-text">将aof缓冲区内容写入aof文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#记录执行一次serverCron"><span class="toc-number">11.</span> <span class="toc-text">记录执行一次serverCron</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1254,6 +1070,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

@@ -286,7 +286,7 @@ height:40vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">853</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">807</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -424,7 +424,6 @@ height:40vh;
 <h2 id="Geo"><a href="#Geo" class="headerlink" title="Geo"></a>Geo</h2><p>3.2版本里面新增的一个功能就是对GEO(地理位置)的支持。以经纬度作标识。</p>
 <h2 id="PUB-SUB"><a href="#PUB-SUB" class="headerlink" title="PUB/SUB"></a>PUB/SUB</h2><p>SUBSCRIBE、UNSUBSCRIBE和PUBLISH 三个命令实现了发布与订阅信息泛型（Publish/Subscribe messaging paradigm），在这个实现中， 发送者（发送信息的客户端）不是将信息直接发送给特定的接收者（接收信息的客户端）， 而是将信息发送给频道（channel）， 然后由频道将信息转发给所有对这个频道感兴趣的订阅者。也就是说发送者无须知道任何关于订阅者的信息， 而订阅者也无须知道是那个客户端给它发送信息， 它只要关注自己感兴趣的频道即可。</p>
 <p>应用：发布/订阅的使用场景确实非常多。我已看见人们在社交网络连接中使用，还可作为基于发布/订阅的脚本触发器，甚至用Redis的发布/订阅功能来建立聊天系统。使用pub/sub主题订阅者模式，还可以实现1:N的消息队列。</p>
-<p>注意：subscribe的时候线程是会被阻塞的。且在消费者下线的情况下，生产的消息会丢失，得使用专业的消息队列如rabbitmq等</p>
 
     </article>
     <!-- license  -->
@@ -433,7 +432,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-高级数据类型/">https://whetherlove.github.io/2018/10/05/Redis入门-高级数据类型/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-高级数据类型/">October 5th 2018, 1:04:17 pm</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-高级数据类型/">October 6th 2018, 7:05:52 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/05/Redis入门-高级数据类型/">October 8th 2018, 9:23:34 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -450,8 +449,8 @@ height:40vh;
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/10/05/Spring中的bean/" title= "Spring中的bean">
-                    <div class="prevTitle">Spring中的bean</div>
+                <a href= "/2018/10/05/Redis入门-大纲/" title= "Redis入门-大纲">
+                    <div class="prevTitle">Redis入门-大纲</div>
                 </a>
             
         </li>
@@ -747,9 +746,112 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 13
+        Total : 20
         </div>
         <!-- search  -->
         
@@ -765,17 +867,42 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -786,6 +913,16 @@ top:40vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
