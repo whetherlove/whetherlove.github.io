@@ -357,17 +357,14 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-持久化/" >
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-管道与事务/" >
             
-                <span>Redis入门-持久化</span>
+                <span>Redis入门-管道与事务</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-持久化方式RDB镜像全量持久化 与AOF增量持久化。
-RDB:在指定的时间间隔内生成数据集的时间点快照(snapshot)，执行bgsave命令后台异步保存数据到硬盘；
-AOF(append-only file):持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。
-Redis支持同时使用AOF和RDB持久化。在这种情况下,当Redis重启时,它会优先使用AOF文件来还原数据集,因为AOF文件保存的数据集通常比RDB文件所保存的数据集更完整.
-RDB持久化手动触发和自动触发RDB持久化是把当前进程...
+PipelineRedis提供了批量操作命令(例如mget,mset等)，有效的节约RTT。但大部分命令是不支持批量操作的，例如要执行n次hgetall命令，并没有mhgetall存在，需要消耗n次RTT。Redis的客户端和服务端可能不是在不同的机器上。例如客户端在北京，Redis服务端在上海，两地直线距离为1300公里，那么1次RTT时间=1300×2/(300000×2/3)=13毫秒(这里假设光纤的速度为光速的2/3)，那么客户端在1秒内大约只能执行80次左右的命令，这个和Redis的高并发高吞吐背道而驰。
+Pipeline(...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -980,6 +977,12 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
     
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 24
@@ -998,7 +1001,7 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
         </li>
     
     
@@ -1008,22 +1011,22 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
@@ -1038,12 +1041,12 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
         </li>
     
     
@@ -1058,7 +1061,7 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
@@ -1068,7 +1071,7 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
         </li>
     
     
@@ -1078,7 +1081,7 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
         </li>
     
     
@@ -1093,22 +1096,22 @@ Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     

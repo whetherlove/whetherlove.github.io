@@ -370,20 +370,94 @@ height:40vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-主从模型/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster功能简述/" >
             
-                <span>Redis集群-主从模型</span>
+                <span>Redis集群-Cluster功能简述</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-主从模式redis单例提供了一种数据缓存方式和丰富的数据操作api，但是将数据完全存储在单个redis中主要存在两个问题：数据备份和数据体量较大造成的性能降低。
-这里redis的主从模式为这两个问题提供了一个较好的解决方案。主从模式指的是使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致，主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取。也就是说，客户端可以将数据写入到主机，由主机自动将数据的写入操作同步到从机。
-主从模式很好的解决了数据备份问题，并且由于主从服务数据几乎是一致的，因...
+Cluster是什么博文至此，redis集群仍存在两类问题。
+第一类问题为单机性能不足问题
+
+每个redis实例存有全部数据，当数据量特别大，超过了单机内存容量的时候无法处理。
+虽然sentinal能将读操作分给从机处理实现部分负载均衡功能，若并发写压力特别高，主服务器也会承受不住。
+实现sentinal后，客户端不再直接连接特定redis实例，而是连接sentinel的ip和port，由sentinel来提供具体的可提供服务的Redis实现。存在流量瓶颈问题。
+
+为了解决这三个问题，Redis cluster提供在多个Redis间节...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
                 <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >
+            
+                <span>Redis入门-过期策略与内存淘汰机制</span>
+        </a>
+        <div class="abstract-content">
+            更多Redis入门系列文章，参见Redis入门-大纲
+过期策略定期删除定期删除，redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
+惰性删除惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
+为什么不用定时删除策略?定时删除,用一个定时器来负责监视key,过期则自...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-管道与事务/" >
+            
+                <span>Redis入门-管道与事务</span>
+        </a>
+        <div class="abstract-content">
+            更多Redis入门系列文章，参见Redis入门-大纲
+PipelineRedis提供了批量操作命令(例如mget,mset等)，有效的节约RTT。但大部分命令是不支持批量操作的，例如要执行n次hgetall命令，并没有mhgetall存在，需要消耗n次RTT。Redis的客户端和服务端可能不是在不同的机器上。例如客户端在北京，Redis服务端在上海，两地直线距离为1300公里，那么1次RTT时间=1300×2/(300000×2/3)=13毫秒(这里假设光纤的速度为光速的2/3)，那么客户端在1秒内大约只能执行80次左右的命令，这个和Redis的高并发高吞吐背道而驰。
+Pipeline(...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
             </div>
             <!-- tags  -->
             
@@ -416,41 +490,6 @@ RDB:在指定的时间间隔内生成数据集的时间点快照(snapshot)，执
 AOF(append-only file):持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。
 Redis支持同时使用AOF和RDB持久化。在这种情况下,当Redis重启时,它会优先使用AOF文件来还原数据集,因为AOF文件保存的数据集通常比RDB文件所保存的数据集更完整.
 RDB持久化手动触发和自动触发RDB持久化是把当前进程...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >
-            
-                <span>Redis入门-过期策略与内存淘汰机制</span>
-        </a>
-        <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-过期策略定期删除定期删除，redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
-惰性删除惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
-为什么不用定时删除策略?定时删除,用一个定时器来负责监视key,过期则自...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -519,40 +558,6 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
 RedisObjectRedis内部使用一个redisObject对象来表示所有的key，value。
 type代表一个value对象具体是何种数据类型，有5种基本数据类型，分别是：String、List、Set、Hash、SortedSet(ZSet)。
 encoding是不同数据类型在redis内部的存储方式，比如：type=string代表value存储的是一个普通字符串，那么对应的encoding可以是raw或者是int,如果是in...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-管道与事务/" >
-            
-                <span>Redis入门-管道与事务</span>
-        </a>
-        <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-PipelineRedis提供了批量操作命令(例如mget,mset等)，有效的节约RTT。但大部分命令是不支持批量操作的，例如要执行n次hgetall命令，并没有mhgetall存在，需要消耗n次RTT。Redis的客户端和服务端可能不是在不同的机器上。例如客户端在北京，Redis服务端在上海，两地直线距离为1300公里，那么1次RTT时间=1300×2/(300000×2/3)=13毫秒(这里假设光纤的速度为光速的2/3)，那么客户端在1秒内大约只能执行80次左右的命令，这个和Redis的高并发高吞吐背道而驰。
-Pipeline(...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -681,14 +686,14 @@ bean注解开启注解创建bean&lt;context:component-scan base-package=”cn.ja
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/01/DI的实现/" >
+        <a class="abstract-title" href = "/2018/10/01/AOP的实现/" >
             
-                <span>DI的实现</span>
+                <span>AOP的实现</span>
         </a>
         <div class="abstract-content">
-            本文章着重分析DI发生时的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从BeanFactory类中的getBean()方法入手。
-IoC容器的初始化过程仅仅是建立了BeanDefinition的数据映射。但Bean的依赖关系尚未建立。 依赖注入的触发时机有可以分为两类。对于懒加载的对象，依赖注入发生在用户第一次调用getBean()向容器索要bean时。对于非懒加载对象则是发生在容器初始化时。
-doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的地方，他的实现从AbstractBeanFactory类看起。可以看到，实际获取bea...
+            本文章着重分析AOP实现中的方法链调用。阅读本文章时，强烈建议打开IDE自己跟着方法调用一层层走。建议从ProxyFactoryBean类中的getObject()方法入手。
+spring与AOP有关的模块有2个，一个是spring-aop, 这是spring自己的aop实现，另一个是spring-aspect，这是利用 aspectJ的aop实现。这两者最大的区别在于Spring中AOP是基于JDK动态代理，而AspectJ是基于字节码操作。这篇文章主要介绍基于JDK动态代理的实现。
+先回顾一下代理模式。代理模式给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用。代理对象可以...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1249,6 +1254,12 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
     
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 24
@@ -1267,7 +1278,7 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
         </li>
     
     
@@ -1277,22 +1288,22 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
@@ -1307,12 +1318,12 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
         </li>
     
     
@@ -1327,7 +1338,7 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
@@ -1337,7 +1348,7 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
         </li>
     
     
@@ -1347,7 +1358,7 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
         </li>
     
     
@@ -1362,22 +1373,22 @@ doGetBean()我们先从第一类谈起。getBean()方法是依赖注入发生的
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
