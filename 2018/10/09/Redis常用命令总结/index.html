@@ -284,7 +284,7 @@ height:40vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">4.3k</span>阅读时长: <span class="post-count reading-time">17 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">4.8k</span>阅读时长: <span class="post-count reading-time">18 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -415,6 +415,7 @@ height:40vh;
     <article class="article-entry">
         <p><strong>资料性内容，请善用Ctrl+F</strong></p>
 <h2 id="针对key的操作"><a href="#针对key的操作" class="headerlink" title="针对key的操作"></a>针对key的操作</h2><p>1.1 del key [key .. ]                 , 删除指定的一个或者多个key;<br>1.2 dump key                          , 序列化给定的key<br>1.3 restore key ttl serialized-value  , 反序列化到key<br>1.4 exists key                        , 判断某一key是否存在<br>1.5 expire key seconds                , 设置key的过期时间<br>    ① set命令可以覆盖过期时间；不改变key的操作不会影响key的生存时间<br>    ② rename也不会改变key的过期时间<br>    ③ persist命令可以删除key的过期时间，即永久<br>    ④ ttl可以查看redis中key的过期时间<br>1.6 expireat key timestamp            , 设置key的生存时间<br>1.7 keys pattern                      , 查找所有符合给定模式pattern的key<br>    ①KEYS <em> 匹配数据库中所有 key 。<br>    ②KEYS h?llo 匹配 hello ， hallo 和 hxllo 等。<br>    ③KEYS h</em>llo 匹配 hllo 和 heeeeello 等。<br>    ④KEYS h[ae]llo 匹配 hello 和 hallo ，但不匹配 hillo 。<br>1.8 move key db                       , 将当前数据库中的key移动数据库 db中。使用select db可以切换数据库<br>1.9 persist key                       , 移除给定 key 的生存时间<br>1.10 pexpire,pexpireat                , 设置key的过期、生存时间，单位毫秒<br>1.11 ttl,pttl                         , key的剩余过期时间，单位秒，单位是毫秒<br>1.12 randomkey                        , 随机返回一个key<br>1.13 rename key newkey                , 将 key 改名为 newkey ，当newkey存在时会覆盖<br>1.14 renamenx key newkey              ,  当newkey不存在时，将key改名为newkey<br>1.15 sort key [by pattern] [get pattern [get pattern]] [limit offset count] [asc | desc] [alpha] [store destination]  ,排序，pattern可以有 *字符出现<br>1.16 type key                         ,  返回key所存储的值的类型 （none,string,list,set,zset,hash）<br>1.17 scan [db] cursor [MATCH pattern] [COUNT count] ,增量式迭代。  类似有 sscan,hscan,zscan<br>    ① SCAN命令用于迭代当前数据库中的数据库键。   返回结果为：用于下一次迭代的新游标；所有被迭代的元素<br>    ② SSCAN 命令用于迭代集合键中的 元素。<br>    ③ HSCAN 命令用于迭代哈希键中的 键值对。<br>    ④ ZSCAN 命令用于迭代有序集合中的 元素（包括元素成员和元素分值）</p>
+<p>keys vs. scan<br>我们需要遍历Redis所有key或者指定模式的key时, 可以用到keys 或 scan 命令。<br>官网对于KEYS命令有一个提示： KEYS 的速度非常快，例如，Redis在一个有1百万个key的数据库里面执行一次查询需要的时间是40毫秒 。但在一个大的数据库中使用它仍然可能造成性能问题。redis的单线程的。keys指令会导致线程阻塞一段时间，如果这个redis正在给线上的业务提供服务，线上服务会停顿，直到指令执行完毕，服务才能恢复。（jedis中应尽量避免使用templateKey方法）。<br>Redis 2.8以上版本，可以使用scan指令，scan指令每次执行都只会返回少量元素，可以无阻塞的提取出指定模式的key列表，但是会有一定的重复概率。<br>SCAN cursor [MATCH pattern] [COUNT count]<br>SCAN命令是一个基于游标的迭代器。这意味着命令每次被调用都需要使用上一次这个调用返回的游标作为该次调用的游标参数，以此来延续之前的迭代过程。<br>当SCAN命令的游标参数（即cursor）被设置为 0 时， 服务器将开始一次新的迭代， 而当服务器向用户返回值为 0 的游标时， 表示迭代已结束。SCAN增量式迭代命令并不保证每次执行都返回某个给定数量的元素,甚至可能会返回零个元素， 但只要命令返回的游标不是 0 ， 应用程序就不应该将迭代视作结束。<br>使用COUNT选项， 能够让用户告知迭代命令， 在每次迭代中应该从数据集里返回多少元素。注意COUNT选项并不能严格控制返回的key数量，只能说是一个大致的约束。并非每次迭代都要使用相同的 COUNT 值。</p>
 <h2 id="String操作"><a href="#String操作" class="headerlink" title="String操作"></a>String操作</h2><p>2.1 append key value                 , 将value追加到原先值的末尾<br>2.2 bitcount key [start] [end]       , 计算给定字符串中，设置为1的比特位的数据量。<br>      ① 注意字符串”1”对应的十进制为49，二进制为00110001<br>      ② 可以通过setbit key offset value<br>2.3 bitop operation destkey key [key …]  , 对key的二进制字符串进行元操作，operation可以是and,or, not,xor。<br>2.4 decr key                          , 将key中存储的数字值减一<br>      ① 与incr命令相反<br>2.5 decrby key decrement              , 将key所存储的值减去减量decrement<br>      ② 与incrby命令相反<br>2.6 get key<br>2.7 getbit key offset                 , 获取key中所存储字符串值对应偏移量上的bit<br>2.8 getrange key start end            , 返回key中字符串值的子字符串<br>2.9 getset key value                  , 设置key的值为value，并返回key的旧值<br>2.10 mget key [key …]               , 返回指定的多个key的值<br>2.11 mset key value [key value …]   , 同时设置多个key-value值<br>2.12 msetnx key value [key value …] , 当且仅当所有的key都不存在时，同时设置多个key-value对<br>2.13 set key value [EX second] [PX millisceonds] [NX|XX]<br>       ① setex key second value , 设置key的同时设置过期时间单位为秒<br>       ② psetex key millisceonds value , 过期时间单位为毫秒<br>         ③ setbit key offset value , 设置指定偏移量上的位<br>         ④ setnx key value , 当且仅当key不存在时设置key的value<br>         ⑤ setrange key offset value , 从offset开始，用value参数覆盖key中的值<br>2.14 strlen key                      , 返回key中所存字符串的长度</p>
 <h2 id="Hash操作"><a href="#Hash操作" class="headerlink" title="Hash操作"></a>Hash操作</h2><p>3.1 hdel key field [field …]       , 删除哈希表key中的一个或多个指定域<br>3.2 hexists key field                , 查看哈希表key中给定的field是否存在<br>3.3 hget key feild                   , 查看哈希表key中给定的field的值<br>      ① hgetall key , 查看哈希表key中所有的field的值<br>      ② hmget key field [field …] , 返回哈希表key中一个或多个给定域的值<br>3.4 hincrby key field increment      , 为哈希表key中的field的值加上增量increment<br>3.5 hkeys key                        , 获取哈希表key中的所有域<br>3.6 hlen key                         , 返回哈希表key中域的数量<br>3.7 hset key field value             , 设置哈希表key中field的值<br>      ① hmset key field value [field value] , 同时设置过个field的值<br>      ② hsetnx key field value , 当field不存在时，设置field的值<br>3.8 hvals key                        , 返回哈希表key中所有域的值<br>3.9 hstrlen key field                , 返回哈希表key中给定field关联值的字符长度</p>
 <h2 id="List操作（List相当于堆栈）"><a href="#List操作（List相当于堆栈）" class="headerlink" title="List操作（List相当于堆栈）"></a>List操作（List相当于堆栈）</h2><p>4.1 lpush key value [value …]      , 将一个或者多个值插入到列表key的表头<br>      ① rpush key value [value …] , 将一个或者多个值插入到列表key的表尾<br>      ② lpushx key value ,当且仅当key存在时将值value插入到key的表头<br>      ③ rpushx key value ,当且仅当key存在时将值value插入到key的表尾<br>4.2 lpop key                          , 移除并返回列表key的头元素<br>      ① rpop key , 移除并返回列表的尾元素<br>      ② blpop key [key …] timeout , lpop的阻塞式指令<br>      ③ brpop key [key …] timeout , rpop的阻塞式指令<br>      ④ rpoplpush source destination , 将列表Source的尾元素弹出以及返回客户端，并且将该元素插入到destination列表中<br>      ⑤ brpoplpush source destination timeout , rpoplpush的阻塞版<br>4.3 lindex key index                  , 返回key中下表为index的元素<br>4.4 linsert key before|after pivot value , 将值value插入到key中，位为pivot之前或者之后<br>4.5 llen key                           , 返回列表key的长度<br>4.6 lrange key start stop              , 返回列表key中指定区间内的元素<br>4.7 lrem key count value               , 根据count的值，移除列表中与参数value相等的元素<br>4.8 lset key index value               , 将列表key下表为index的元素值设置为value<br>4.9 ltrim key start stop               , 对一个列表进行trim</p>
@@ -434,7 +435,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/09/Redis常用命令总结/">https://whetherlove.github.io/2018/10/09/Redis常用命令总结/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/09/Redis常用命令总结/">October 9th 2018, 8:52:30 am</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/09/Redis常用命令总结/">October 10th 2018, 9:44:31 am</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/09/Redis常用命令总结/">October 11th 2018, 9:06:30 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -959,9 +960,60 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 24
+        Total : 31
         </div>
         <!-- search  -->
         
@@ -977,17 +1029,37 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-Lock/" >多线程-Lock</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-util-Concurrent/" >多线程-java.util.Concurrent</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-lang-Thread/" >多线程-java.lang.Thread</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-并发模型/" >多线程-并发模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/java基础大纲/" >Java基础大纲</a>
         </li>
     
     
@@ -997,7 +1069,27 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
         </li>
     
     
@@ -1007,12 +1099,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
         </li>
     
     
@@ -1027,7 +1119,7 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
         </li>
     
     
@@ -1037,27 +1129,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-基本数据类型/" >Redis入门-基本数据类型</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1082,12 +1169,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
         </li>
     
     
@@ -1109,6 +1196,12 @@ top:40vh;
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
+    
+        <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
+    
+        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
+    
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1148,6 +1241,8 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="技术入门"><span class="iconfont-archer">&#xe60a;</span>技术入门</span>
     
         <span class="sidebar-category-name" data-categories="技术资料"><span class="iconfont-archer">&#xe60a;</span>技术资料</span>
+    
+        <span class="sidebar-category-name" data-categories="Java基础"><span class="iconfont-archer">&#xe60a;</span>Java基础</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

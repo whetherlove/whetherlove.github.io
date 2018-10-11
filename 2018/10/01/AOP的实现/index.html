@@ -288,7 +288,7 @@ height:40vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">2.6k</span>阅读时长: <span class="post-count reading-time">10 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">2.7k</span>阅读时长: <span class="post-count reading-time">11 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -442,6 +442,8 @@ height:40vh;
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultAdvisorAdapterRegistry</span> <span class="keyword">implements</span> <span class="title">AdvisorAdapterRegistry</span>, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;AdvisorAdapter&gt; adapters = <span class="keyword">new</span> ArrayList(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DefaultAdvisorAdapterRegistry</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.registerAdvisorAdapter(<span class="keyword">new</span> MethodBeforeAdviceAdapter());</span><br><span class="line">        <span class="keyword">this</span>.registerAdvisorAdapter(<span class="keyword">new</span> AfterReturningAdviceAdapter());</span><br><span class="line">        <span class="keyword">this</span>.registerAdvisorAdapter(<span class="keyword">new</span> ThrowsAdviceAdapter());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> MethodInterceptor[] getInterceptors(Advisor advisor) <span class="keyword">throws</span> UnknownAdviceTypeException &#123;</span><br><span class="line">        List&lt;MethodInterceptor&gt; interceptors = <span class="keyword">new</span> ArrayList(<span class="number">3</span>);</span><br><span class="line">        Advice advice = advisor.getAdvice();</span><br><span class="line">        <span class="keyword">if</span> (advice <span class="keyword">instanceof</span> MethodInterceptor) &#123;</span><br><span class="line">            interceptors.add((MethodInterceptor)advice);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Iterator var4 = <span class="keyword">this</span>.adapters.iterator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(var4.hasNext()) &#123;</span><br><span class="line">            AdvisorAdapter adapter = (AdvisorAdapter)var4.next();</span><br><span class="line">            <span class="keyword">if</span> (adapter.supportsAdvice(advice)) &#123;</span><br><span class="line">                interceptors.add(adapter.getInterceptor(advisor));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (interceptors.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnknownAdviceTypeException(advisor.getAdvice());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> (MethodInterceptor[])interceptors.toArray(<span class="keyword">new</span> MethodInterceptor[interceptors.size()]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="invoke"><a href="#invoke" class="headerlink" title="invoke()"></a>invoke()</h3><p>以MethodBeforeAdviceAdapter为例，它将advice封装成MethodBeforeAdviceInterceptor，在它的invoke回调方法中可以看到，先执行advice的before回调，然后出发proceed方法去执行下一个拦截器的迭代。根据这个逻辑，不用看源码也能知道，在AfterReturningAdviceAdapter的invoke方法中，首先执行proceed，然后执行advice的afterReturning回调，从而实现后置通知。ThrowsAdviceInterceptor则持有一个exceptionHandlerMap来应对不同的错误。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(MethodInvocation mi)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.advice.before(mi.getMethod(), mi.getArguments(), mi.getThis());</span><br><span class="line">        <span class="keyword">return</span> mi.proceed();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="TargetSource"><a href="#TargetSource" class="headerlink" title="TargetSource"></a>TargetSource</h3><p>spring-aop对目标的增强是通过拦截器来完成的，但有些时候需要对目标本身进行处理，这就要用到TargetSource接口了。</p>
+<p>比较常用的TargetSource实现有HotSwappableTargetSource,它可以使用户以线程安全的形式切换目标对象，提供所谓的热交换功能。在需要切换目标对象时，调用其swap方法即可。常见的应用场景如切换数据库源，使用mysql做测试，上线时切换oracle。</p>
 <h2 id="AspectJ的AOP实现"><a href="#AspectJ的AOP实现" class="headerlink" title="AspectJ的AOP实现"></a>AspectJ的AOP实现</h2><p>以上就是spring-aop的实现。这里稍微提一下AspectJ，它的AOP实现是通过编织阶段(Weaving Phase)，对目标Java类型的字节码进行操作，将需要的Advice逻辑给编织进去，形成新的字节码。因为JVM执行的都是Java源代码编译后得到的字节码，所以AspectJ相当于在这个过程中做了一点手脚，让Advice能够参与进来。</p>
 <p>编织阶段可以有两个选择，分别是加载时编织(也可以成为运行时编织)和编译时编织：加载时编织(Load-Time Weaving)是在JVM加载类的时候完成的。而编译时编织(Compile-Time Weaving)则需要使用AspectJ的编译器来替换JDK的编译器。</p>
 
@@ -452,7 +454,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/01/AOP的实现/">https://whetherlove.github.io/2018/10/01/AOP的实现/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/01/AOP的实现/">October 1st 2018, 5:29:50 pm</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/01/AOP的实现/">October 2nd 2018, 5:51:02 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/01/AOP的实现/">October 11th 2018, 9:09:41 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -598,7 +600,7 @@ top:40vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#代理对象的生成"><span class="toc-number">1.</span> <span class="toc-text">代理对象的生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getObject"><span class="toc-number">1.1.</span> <span class="toc-text">getObject()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getSingletonInstance"><span class="toc-number">1.2.</span> <span class="toc-text">getSingletonInstance()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#createAopProxy"><span class="toc-number">1.3.</span> <span class="toc-text">createAopProxy()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getProxy"><span class="toc-number">1.4.</span> <span class="toc-text">getProxy()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拦截器的调用"><span class="toc-number">2.</span> <span class="toc-text">拦截器的调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proceed"><span class="toc-number">2.1.</span> <span class="toc-text">proceed()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getInterceptorsAndDynamicInterceptionAdvice"><span class="toc-number">2.2.</span> <span class="toc-text">getInterceptorsAndDynamicInterceptionAdvice()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getIntercepters"><span class="toc-number">2.3.</span> <span class="toc-text">getIntercepters()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#invoke"><span class="toc-number">2.4.</span> <span class="toc-text">invoke()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AspectJ的AOP实现"><span class="toc-number">3.</span> <span class="toc-text">AspectJ的AOP实现</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#代理对象的生成"><span class="toc-number">1.</span> <span class="toc-text">代理对象的生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getObject"><span class="toc-number">1.1.</span> <span class="toc-text">getObject()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getSingletonInstance"><span class="toc-number">1.2.</span> <span class="toc-text">getSingletonInstance()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#createAopProxy"><span class="toc-number">1.3.</span> <span class="toc-text">createAopProxy()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getProxy"><span class="toc-number">1.4.</span> <span class="toc-text">getProxy()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拦截器的调用"><span class="toc-number">2.</span> <span class="toc-text">拦截器的调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proceed"><span class="toc-number">2.1.</span> <span class="toc-text">proceed()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getInterceptorsAndDynamicInterceptionAdvice"><span class="toc-number">2.2.</span> <span class="toc-text">getInterceptorsAndDynamicInterceptionAdvice()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getIntercepters"><span class="toc-number">2.3.</span> <span class="toc-text">getIntercepters()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#invoke"><span class="toc-number">2.4.</span> <span class="toc-text">invoke()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TargetSource"><span class="toc-number">2.5.</span> <span class="toc-text">TargetSource</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AspectJ的AOP实现"><span class="toc-number">3.</span> <span class="toc-text">AspectJ的AOP实现</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -977,9 +979,60 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 24
+        Total : 31
         </div>
         <!-- search  -->
         
@@ -995,17 +1048,37 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-Lock/" >多线程-Lock</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-util-Concurrent/" >多线程-java.util.Concurrent</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-lang-Thread/" >多线程-java.lang.Thread</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-并发模型/" >多线程-并发模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/java基础大纲/" >Java基础大纲</a>
         </li>
     
     
@@ -1015,7 +1088,27 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
         </li>
     
     
@@ -1025,12 +1118,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
         </li>
     
     
@@ -1045,7 +1138,7 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
         </li>
     
     
@@ -1055,27 +1148,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-基本数据类型/" >Redis入门-基本数据类型</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1100,12 +1188,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
         </li>
     
     
@@ -1127,6 +1215,12 @@ top:40vh;
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
+    
+        <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
+    
+        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
+    
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1166,6 +1260,8 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="技术入门"><span class="iconfont-archer">&#xe60a;</span>技术入门</span>
     
         <span class="sidebar-category-name" data-categories="技术资料"><span class="iconfont-archer">&#xe60a;</span>技术资料</span>
+    
+        <span class="sidebar-category-name" data-categories="Java基础"><span class="iconfont-archer">&#xe60a;</span>Java基础</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
