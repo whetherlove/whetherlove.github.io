@@ -370,14 +370,13 @@ height:40vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/09/Redis集群-3-3集群搭建实例/" >
+        <a class="abstract-title" href = "/2018/10/09/Redis配置详解/" >
             
-                <span>Redis集群-3+3集群搭建实例</span>
+                <span>Redis配置详解</span>
         </a>
         <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-搭建集群至少需要3主3从6台服务器或进程，否则你会遇到这错误
-1）将redis安装目录下的redis.conf文件复制六份，分别取名为：cluster-6379.conf、cluster-6380.conf、cluster-6381.conf、cluster-6382.conf、cluster-6383.conf、cluster-6384.conf。对于一个高可用的集群方案，集群每个节点都将为其分配一个从节点，以防止数据节点因为故障下线，这里使用六份配置文件定义六个redis实例，其中三个作为主节点，剩余三个分别作为其从节点。对于这六...
+            资料性内容，请善用Ctrl+F
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210310410510610710810911011111211311411511611711811912012112212312412512612712812913...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -389,8 +388,6 @@ height:40vh;
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
     
 </div>
 
@@ -404,20 +401,25 @@ height:40vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster功能简述/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster实现原理/" >
             
-                <span>Redis集群-Cluster功能简述</span>
+                <span>Redis集群-Cluster实现原理</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-Cluster是什么博文至此，redis集群仍存在两类问题。
-第一类问题为单机性能不足问题
+心跳机制Cluster中的每个节点都维护一份在自己看来当前整个集群的状态，主要包括：
 
-每个redis实例存有全部数据，当数据量特别大，超过了单机内存容量的时候无法处理。
-虽然sentinal能将读操作分给从机处理实现部分负载均衡功能，若并发写压力特别高，主服务器也会承受不住。
-实现sentinal后，客户端不再直接连接特定redis实例，而是连接sentinel的ip和port，由sentinel来提供具体的可提供服务的Redis实现。存在流量瓶颈问题。
+当前集群状态
 
-为了解决这三个问题，Redis cluster提供在多个Redis间节...
+集群中各节点所负责的slots信息，及其migrate状态
+
+集群中各节点的master-slave状态
+
+集群中各节点的存活状态及不可达投票
+
+
+当集群状态变化时，如新节点加入、slot迁移、节点宕机、slave提升为新Master，我们希望这些变化尽快的被发现，传播到整个集群的所有节点并达成一致。节点之间相互的心跳（PING，PONG，MEET）及其携带的数据是集群状态传播最主要的途径。
+心跳时机Redis节点会记录其向每一个节...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -444,15 +446,15 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-主从模型/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-集群基础知识/" >
             
-                <span>Redis集群-主从模型</span>
+                <span>Redis集群-集群基础知识</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-主从模式redis单例提供了一种数据缓存方式和丰富的数据操作api，但是将数据完全存储在单个redis中主要存在两个问题：数据备份和数据体量较大造成的性能降低。
-这里redis的主从模式为这两个问题提供了一个较好的解决方案。主从模式指的是使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致，主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取。也就是说，客户端可以将数据写入到主机，由主机自动将数据的写入操作同步到从机。
-主从模式很好的解决了数据备份问题，并且由于主从服务数据几乎是一致的，因...
+什么是集群集群主要分成三大类( 高可用集群， 负载均衡集群，科学计算集群)高可用集群( High Availability Cluster)负载均衡集群(Load Balance Cluster)科学计算集群(High Performance Computing Cluster)
+
+高可用集群(High Availability Cluster)常见的就是2个节点做成的HA集群，有很多通俗的不科学的名称，比如”双机热备”, “双机互备”, “双机”.高可用集群解决的是保障用户的应用程序持续对外提供服务的能力。 (请注意高可用集群既不是...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -548,60 +550,20 @@ redis的serverCron函数，执行期间需要做11件事：...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-集群基础知识/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster功能简述/" >
             
-                <span>Redis集群-集群基础知识</span>
+                <span>Redis集群-Cluster功能简述</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-什么是集群集群主要分成三大类( 高可用集群， 负载均衡集群，科学计算集群)高可用集群( High Availability Cluster)负载均衡集群(Load Balance Cluster)科学计算集群(High Performance Computing Cluster)
+Cluster是什么博文至此，redis集群仍存在两类问题。
+第一类问题为单机性能不足问题
 
-高可用集群(High Availability Cluster)常见的就是2个节点做成的HA集群，有很多通俗的不科学的名称，比如”双机热备”, “双机互备”, “双机”.高可用集群解决的是保障用户的应用程序持续对外提供服务的能力。 (请注意高可用集群既不是...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
+每个redis实例存有全部数据，当数据量特别大，超过了单机内存容量的时候无法处理。
+虽然sentinal能将读操作分给从机处理实现部分负载均衡功能，若并发写压力特别高，主服务器也会承受不住。
+实现sentinal后，客户端不再直接连接特定redis实例，而是连接sentinel的ip和port，由sentinel来提供具体的可提供服务的Redis实现。存在流量瓶颈问题。
 
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster实现原理/" >
-            
-                <span>Redis集群-Cluster实现原理</span>
-        </a>
-        <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-心跳机制Cluster中的每个节点都维护一份在自己看来当前整个集群的状态，主要包括：
-
-当前集群状态
-
-集群中各节点所负责的slots信息，及其migrate状态
-
-集群中各节点的master-slave状态
-
-集群中各节点的存活状态及不可达投票
-
-
-当集群状态变化时，如新节点加入、slot迁移、节点宕机、slave提升为新Master，我们希望这些变化尽快的被发现，传播到整个集群的所有节点并达成一致。节点之间相互的心跳（PING，PONG，MEET）及其携带的数据是集群状态传播最主要的途径。
-心跳时机Redis节点会记录其向每一个节...
+为了解决这三个问题，Redis cluster提供在多个Redis间节...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -662,6 +624,41 @@ Sentinal概述单就主从模式而言，master节点挂了以后，redis不会�
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-主从模型/" >
+            
+                <span>Redis集群-主从模型</span>
+        </a>
+        <div class="abstract-content">
+            更多Redis入门系列文章，参见Redis入门-大纲
+主从模式redis单例提供了一种数据缓存方式和丰富的数据操作api，但是将数据完全存储在单个redis中主要存在两个问题：数据备份和数据体量较大造成的性能降低。
+这里redis的主从模式为这两个问题提供了一个较好的解决方案。主从模式指的是使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致，主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取。也就是说，客户端可以将数据写入到主机，由主机自动将数据的写入操作同步到从机。
+主从模式很好的解决了数据备份问题，并且由于主从服务数据几乎是一致的，因...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/05/Redis入门-管道与事务/" >
             
                 <span>Redis入门-管道与事务</span>
@@ -696,15 +693,14 @@ Pipeline(...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-高级数据类型/" >
             
-                <span>Redis入门-过期策略与内存淘汰机制</span>
+                <span>Redis入门-高级数据类型</span>
         </a>
         <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-过期策略定期删除定期删除，redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
-惰性删除惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
-为什么不用定时删除策略?定时删除,用一个定时器来负责监视key,过期则自...
+            此篇文章仅从理论上介绍几种Redis高级数据类型，有关各类型的具体操作，可见Redis常用命令总结更多Redis入门系列文章，参见Redis入门-大纲
+Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的key和value本身就支持二进制的存储方式，所以bitmaps只是一个独特的扩展。因为是面向字节操作，所以他的最大长度就是512M，最适合设置成2^32个不同字节。
+一般的使用场景都是单一的统计，效率较高。比如签到，点击等。例如为了统计今日登录的用户数，我们建立了一个bitmap,每一位标识一个用户ID。当某个用户访问我们的网页或执行了某个操作，就在bi...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1304,22 +1300,6 @@ Pipeline(...
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 31
@@ -1338,7 +1318,7 @@ Pipeline(...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-Lock/" >多线程-Lock</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
         </li>
     
     
@@ -1348,7 +1328,7 @@ Pipeline(...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-Lock/" >多线程-Lock</a>
         </li>
     
     
@@ -1378,12 +1358,12 @@ Pipeline(...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1393,12 +1373,7 @@ Pipeline(...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
         </li>
     
     
@@ -1408,17 +1383,7 @@ Pipeline(...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
         </li>
     
     
@@ -1428,7 +1393,37 @@ Pipeline(...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1439,21 +1434,6 @@ Pipeline(...
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-基本数据类型/" >Redis入门-基本数据类型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
