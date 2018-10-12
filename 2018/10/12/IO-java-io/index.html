@@ -286,7 +286,7 @@ height:40vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">1.4k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">411</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -434,149 +434,7 @@ height:40vh;
 <li>在创建一个文件时，如果目录下有同名文件将被覆盖。</li>
 <li>在读取文件时，必须保证该文件已存在，否则出异常</li>
 </ul>
-<p>文件写出一例：</p>
-<ol>
-<li>FileWriter fw = new FileWriter(“F:\1.txt”);//目的是明确数据要存放的目的地。  </li>
-<li></li>
-<li>//调用write的方法将字符串写到流中  </li>
-<li>fw.write(“hello world!”);  </li>
-<li></li>
-<li>//刷新流对象缓冲中的数据，将数据刷到目的地中  </li>
-<li>fw.flush();  </li>
-<li></li>
-<li>//关闭流资源 close()方法中会首先执行一次flush();  </li>
-<li>fw.write(“first_test”);  </li>
-<li>fw.close();<br>文件读入一例：</li>
-<li>FileReader fr = new FileReader(“Demo.txt”);  </li>
-<li>char []  buf = new char[6];   </li>
-<li>//将Denmo中的文件读取到buf数组中。  </li>
-<li>int num = 0;      </li>
-<li>while((num = fr.read(buf))!=-1) {  </li>
-<li></li>
-<li>//String(char[] value , int offest,int count) 分配一个新的String,包含从offest开始的count个字符  </li>
-<li>sop(new String(buf,0,num));  </li>
-<li>}  </li>
-<li>sop(‘\n’);  </li>
-<li>fr.close();<br>指定编码：<br>new FileOutputStream(“goods1.txt”),”UTF-8”)</li>
-</ol>
-<p>字符流的缓冲区：BufferedReader和BufferedWreiter<br>缓冲区的出现时为了提高流的操作效率而出现的.<br>需要被提高效率的流作为参数传递给缓冲区的构造函数<br>在缓冲区中封装了一个数组，存入数据后一次取出<br>BufferedReader示例：</p>
-<ol>
-<li>FileReader rw = new FileReader(“buf.txt”);  </li>
-<li></li>
-<li>//只要将需要被提高效率的流作为参数传递给缓冲区的构造函数即可  </li>
-<li>BufferedReader brw = new BufferedReader(rw);  </li>
-<li></li>
-<li></li>
-<li>for(;;) {  </li>
-<li>String s = brw.readLine();  </li>
-<li>if(s==null) break;  </li>
-<li>System.out.println(s);  </li>
-<li>}  </li>
-<li></li>
-<li>brw.close();//关闭输入流对象<br>读取流缓冲区提供了一个一次读一行的方法readline，方便对文本数据的获取。<br>readline()只返回回车符前面的字符，不返回回车符。如果是复制的话，必须加入newLine()，写入回车符。newLine()是java提供的多平台换行符写入方法。</li>
-</ol>
-<p>BufferedWriter示例：</p>
-<ol>
-<li>//创建一个字符写入流对象  </li>
-<li>FileWriter fw = new FileWriter(“buf.txt”);  </li>
-<li></li>
-<li>//为了提高字符写入效率，加入了缓冲技术。  </li>
-<li>//只要将需要被提高效率的流作为参数传递给缓冲区的构造函数即可  </li>
-<li>BufferedWriter bfw = new BufferedWriter(fw);  </li>
-<li></li>
-<li>//bfw.write(“abc\r\nde”);  </li>
-<li>//bfw.newLine();               这行代码等价于bfw.write(“\r\n”),相当于一个跨平台的换行符  </li>
-<li>//用到缓冲区就必须要刷新  </li>
-<li>for(int x = 1; x &lt; 5; x++) {  </li>
-<li>bfw.write(“abc”);  </li>
-<li>bfw.newLine();                  //java提供了一个跨平台的换行符newLine();  </li>
-<li>bfw.flush();  </li>
-<li>}  </li>
-<li></li>
-<li></li>
-<li></li>
-<li>bfw.flush();                                                //刷新缓冲区  </li>
-<li>bfw.close();                                                //关闭缓冲区，但是必须要先刷新  </li>
-<li></li>
-<li>//注意，关闭缓冲区就是在关闭缓冲中的流对象  </li>
-<li>fw.close();    </li>
-</ol>
-<p>字节流<br>1、字节流和字符流的基本操作是相同的，但是要想操作媒体流就需要用到字节流。<br>2、字节流因为操作的是字节，所以可以用来操作媒体文件。（媒体文件也是以字节存储的）<br>3、读写字节流：InputStream   输入流（读）和OutputStream  输出流（写）<br>4、字节流操作可以不用刷新流操作。<br>5、InputStream特有方法：<br>        int available();//返回文件中的字节个数<br>注：可以利用此方法来指定读取方式中传入数组的长度，从而省去循环判断。但是如果文件较大，而虚拟机启动分配的默认内存一般为64M。当文件过大时，此数组长度所占内存空间就会溢出。所以，此方法慎用，当文件不大时，可以使用。</p>
-<p>文件复制示例：</p>
-<ol>
-<li>public static void copyBmp() {  </li>
-<li></li>
-<li>FileInputStream fis = null;  </li>
-<li>FileOutputStream fos = null;  </li>
-<li>try {  </li>
-<li>fis = new FileInputStream(“F:\java_Demo\day9_28\1.bmp”);            </li>
-<li>fos = new FileOutputStream(“F:\java_Demo\day9_28\2.bmp”);           </li>
-<li>byte[] copy = new byte[1024];  </li>
-<li>int len = 0;  </li>
-<li>while((len=fis.read(copy))!=-1) {  </li>
-<li>fos.write(copy,0,len);  </li>
-<li>}  </li>
-<li>}  </li>
-<li>catch (IOException e) {  </li>
-<li>e.printStackTrace();  </li>
-<li>throw new RuntimeException(“复制文件异常”);  </li>
-<li>}  </li>
-<li>finally {  </li>
-<li>try {  </li>
-<li>if(fis!=null) fis.close();  </li>
-<li>}  </li>
-<li>catch (IOException e) {  </li>
-<li>e.printStackTrace();  </li>
-<li>throw new RuntimeException(“读取流”);  </li>
-<li>}  </li>
-<li>}            </li>
-<li>}  </li>
-</ol>
-<p>字节流缓冲区</p>
-<ul>
-<li>字节流缓冲区跟字符流缓冲区一样，也是为了提高效率。</li>
-</ul>
-<ol>
-<li>read()：会将字节byte()提升为int型值</li>
-<li>write()：会将int类型转换为byte()类型，保留最后的8位。</li>
-</ol>
-<p>管道流<br>管道流用于多进程间的通讯。示例如下：<br>public class PipeExample {</p>
-<pre><code>public static void main(String[] args) throws IOException {
-
-    final PipedOutputStream output = new PipedOutputStream();
-    final PipedInputStream  input  = new PipedInputStream(output);
-
-
-    Thread thread1 = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                output.write(&quot;Hello world, pipe!&quot;.getBytes());
-            } catch (IOException e) {
-            }
-        }
-    });
-
-
-    Thread thread2 = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                int data = input.read();
-                while(data != -1){
-                    System.out.print((char) data);
-                    data = input.read();
-                }
-            } catch (IOException e) {
-            }
-        }
-    });
-
-    thread1.start();
-    thread2.start();
-
-}
-</code></pre><p>}</p>
+<p><strong>UNDER CONSTRUCTION</strong></p>
 <p>更多Java基础系列文章，参见<a href="https://whetherlove.github.io/2018/10/11/Java基础大纲/">Java基础大纲</a></p>
 
     </article>
@@ -586,7 +444,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">https://whetherlove.github.io/2018/10/12/IO-java-io/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">October 12th 2018, 5:28:04 pm</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">October 12th 2018, 5:33:41 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">October 12th 2018, 6:33:57 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1265,6 +1123,30 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 37
@@ -1298,12 +1180,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-happens-before规则/" >JVM-happens-before规则</a>
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-GC垃圾回收机制/" >JVM-GC垃圾回收机制</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-GC垃圾回收机制/" >JVM-GC垃圾回收机制</a>
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-happens-before规则/" >JVM-happens-before规则</a>
         </li>
     
     
@@ -1318,12 +1200,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1333,17 +1215,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-并发模型/" >多线程-并发模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-lang-Thread/" >多线程-java.lang.Thread</a>
         </li>
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-并发模型/" >多线程-并发模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/java基础大纲/" >Java基础大纲</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1358,32 +1245,7 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
         </li>
     
     
@@ -1393,7 +1255,7 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
         </li>
     
     
@@ -1403,12 +1265,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-基本数据类型/" >Redis入门-基本数据类型</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
         </li>
     
     
@@ -1423,12 +1295,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-基本数据类型/" >Redis入门-基本数据类型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -1443,22 +1325,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
         </li>
     
     
@@ -1471,23 +1353,23 @@ top:40vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
+    
+        <span class="sidebar-tag-name" data-tags="IO"><span class="iconfont-archer">&#xe606;</span>IO</span>
+    
         <span class="sidebar-tag-name" data-tags="Spring"><span class="iconfont-archer">&#xe606;</span>Spring</span>
     
         <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
     
         <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
     
-        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
-    
-        <span class="sidebar-tag-name" data-tags="IO"><span class="iconfont-archer">&#xe606;</span>IO</span>
-    
-        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
-    
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
     
         <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
+    
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     
@@ -1524,9 +1406,9 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="技术源码"><span class="iconfont-archer">&#xe60a;</span>技术源码</span>
-    
         <span class="sidebar-category-name" data-categories="Java基础"><span class="iconfont-archer">&#xe60a;</span>Java基础</span>
+    
+        <span class="sidebar-category-name" data-categories="技术源码"><span class="iconfont-archer">&#xe60a;</span>技术源码</span>
     
         <span class="sidebar-category-name" data-categories="技术入门"><span class="iconfont-archer">&#xe60a;</span>技术入门</span>
     
