@@ -391,14 +391,55 @@ redis vs. memCache vs. ehCache三者都可以用来做缓存MemcacheMemcache可�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-Sentinal/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster功能简述/" >
             
-                <span>Redis集群-Sentinal</span>
+                <span>Redis集群-Cluster功能简述</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-Sentinal概述单就主从模式而言，master节点挂了以后，redis不会从slave节点重新选一个做master。使用Sentinal可以很好解决这个问题。当master节点挂了以后，sentinel会在slave中选择一个做为master，并修改它们的配置文件，其他slave的配置文件也会被修改，比如slaveof属性会指向新的master。
-每个sentinel节点其实就是一个redis实例，与主从节点不同的是sentinel节点作用是用于监控redis数据节。由于sentinel也有挂掉的可能，所以一般sentinel也会...
+Cluster是什么博文至此，redis集群仍存在两类问题。
+第一类问题为单机性能不足问题
+
+每个redis实例存有全部数据，当数据量特别大，超过了单机内存容量的时候无法处理。
+虽然sentinal能将读操作分给从机处理实现部分负载均衡功能，若并发写压力特别高，主服务器也会承受不住。
+实现sentinal后，客户端不再直接连接特定redis实例，而是连接sentinel的ip和port，由sentinel来提供具体的可提供服务的Redis实现。存在流量瓶颈问题。
+
+为了解决这三个问题，Redis cluster提供在多个Redis间节...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-集群基础知识/" >
+            
+                <span>Redis集群-集群基础知识</span>
+        </a>
+        <div class="abstract-content">
+            更多Redis入门系列文章，参见Redis入门-大纲
+什么是集群集群主要分成三大类( 高可用集群， 负载均衡集群，科学计算集群)高可用集群( High Availability Cluster)负载均衡集群(Load Balance Cluster)科学计算集群(High Performance Computing Cluster)
+
+高可用集群(High Availability Cluster)常见的就是2个节点做成的HA集群，有很多通俗的不科学的名称，比如”双机热备”, “双机互备”, “双机”.高可用集群解决的是保障用户的应用程序持续对外提供服务的能力。 (请注意高可用集群既不是...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -460,88 +501,6 @@ Sentinal概述单就主从模式而言，master节点挂了以后，redis不会�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster实现原理/" >
-            
-                <span>Redis集群-Cluster实现原理</span>
-        </a>
-        <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-心跳机制Cluster中的每个节点都维护一份在自己看来当前整个集群的状态，主要包括：
-
-当前集群状态
-
-集群中各节点所负责的slots信息，及其migrate状态
-
-集群中各节点的master-slave状态
-
-集群中各节点的存活状态及不可达投票
-
-
-当集群状态变化时，如新节点加入、slot迁移、节点宕机、slave提升为新Master，我们希望这些变化尽快的被发现，传播到整个集群的所有节点并达成一致。节点之间相互的心跳（PING，PONG，MEET）及其携带的数据是集群状态传播最主要的途径。
-心跳时机Redis节点会记录其向每一个节...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-持久化/" >
-            
-                <span>Redis入门-持久化</span>
-        </a>
-        <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-持久化方式RDB镜像全量持久化 与AOF增量持久化。
-RDB:在指定的时间间隔内生成数据集的时间点快照(snapshot)，执行bgsave命令后台异步保存数据到硬盘；
-AOF(append-only file):持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。
-Redis支持同时使用AOF和RDB持久化。在这种情况下,当Redis重启时,它会优先使用AOF文件来还原数据集,因为AOF文件保存的数据集通常比RDB文件所保存的数据集更完整.
-RDB持久化手动触发和自动触发RDB持久化是把当前进程...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/05/Redis入门-基本数据类型/" >
             
                 <span>Redis入门-基本数据类型</span>
@@ -577,49 +536,17 @@ encoding是不同数据类型在redis内部的存储方式，比如：type=strin
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-高级数据类型/" >
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-持久化/" >
             
-                <span>Redis入门-高级数据类型</span>
-        </a>
-        <div class="abstract-content">
-            此篇文章仅从理论上介绍几种Redis高级数据类型，有关各类型的具体操作，可见Redis常用命令总结更多Redis入门系列文章，参见Redis入门-大纲
-Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的key和value本身就支持二进制的存储方式，所以bitmaps只是一个独特的扩展。因为是面向字节操作，所以他的最大长度就是512M，最适合设置成2^32个不同字节。
-一般的使用场景都是单一的统计，效率较高。比如签到，点击等。例如为了统计今日登录的用户数，我们建立了一个bitmap,每一位标识一个用户ID。当某个用户访问我们的网页或执行了某个操作，就在bi...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >
-            
-                <span>Redis入门-过期策略与内存淘汰机制</span>
+                <span>Redis入门-持久化</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-过期策略定期删除定期删除，redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
-惰性删除惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
-为什么不用定时删除策略?定时删除,用一个定时器来负责监视key,过期则自...
+持久化方式RDB镜像全量持久化 与AOF增量持久化。
+RDB:在指定的时间间隔内生成数据集的时间点快照(snapshot)，执行bgsave命令后台异步保存数据到硬盘；
+AOF(append-only file):持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。
+Redis支持同时使用AOF和RDB持久化。在这种情况下,当Redis重启时,它会优先使用AOF文件来还原数据集,因为AOF文件保存的数据集通常比RDB文件所保存的数据集更完整.
+RDB持久化手动触发和自动触发RDB持久化是把当前进程...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -680,6 +607,40 @@ Pipeline(...
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-高级数据类型/" >
+            
+                <span>Redis入门-高级数据类型</span>
+        </a>
+        <div class="abstract-content">
+            此篇文章仅从理论上介绍几种Redis高级数据类型，有关各类型的具体操作，可见Redis常用命令总结更多Redis入门系列文章，参见Redis入门-大纲
+Bitmapbitmap是一种伪数据类型，是基于String实现的。因为redis的key和value本身就支持二进制的存储方式，所以bitmaps只是一个独特的扩展。因为是面向字节操作，所以他的最大长度就是512M，最适合设置成2^32个不同字节。
+一般的使用场景都是单一的统计，效率较高。比如签到，点击等。例如为了统计今日登录的用户数，我们建立了一个bitmap,每一位标识一个用户ID。当某个用户访问我们的网页或执行了某个操作，就在bi...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/05/Redis入门-大纲/" >
             
                 <span>Redis入门-大纲</span>
@@ -702,6 +663,41 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
         <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "大纲">大纲</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >
+            
+                <span>Redis入门-过期策略与内存淘汰机制</span>
+        </a>
+        <div class="abstract-content">
+            更多Redis入门系列文章，参见Redis入门-大纲
+过期策略定期删除定期删除，redis默认每个100ms检查，是否有过期的key,有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。
+惰性删除惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。
+为什么不用定时删除策略?定时删除,用一个定时器来负责监视key,过期则自...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/05</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
     
 </div>
 
@@ -1329,38 +1325,6 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 37
@@ -1394,22 +1358,17 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-GC垃圾回收机制/" >JVM-GC垃圾回收机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-happens-before规则/" >JVM-happens-before规则</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-GC垃圾回收机制/" >JVM-GC垃圾回收机制</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
         </li>
     
     
@@ -1420,6 +1379,11 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
         </li>
     
     
@@ -1444,17 +1408,7 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1464,27 +1418,12 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
         </li>
     
     
@@ -1494,12 +1433,37 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -1509,7 +1473,7 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
         </li>
     
     
@@ -1519,12 +1483,12 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
@@ -1539,22 +1503,22 @@ Redis 是什么？通常而言目前的数据库分类有几种，包括 SQL/NSQ
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
