@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://whetherlove.github.io/2018/10/12/IO-vs-NIO/</loc>
+    <lastmod>2018-10-18T02:38:20.000Z</lastmod>
+  </url>  <url>
     <loc>https://whetherlove.github.io/2018/10/05/Redis%E5%85%A5%E9%97%A8-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
     <lastmod>2018-10-18T02:35:56.000Z</lastmod>
   </url>  <url>
@@ -33,9 +36,6 @@
   </url>  <url>
     <loc>https://whetherlove.github.io/2018/10/11/%E5%A4%9A%E7%BA%BF%E7%A8%8B-java-util-Concurrent/</loc>
     <lastmod>2018-10-18T02:31:25.000Z</lastmod>
-  </url>  <url>
-    <loc>https://whetherlove.github.io/2018/10/12/IO-vs-NIO/</loc>
-    <lastmod>2018-10-18T02:29:00.000Z</lastmod>
   </url>  <url>
     <loc>https://whetherlove.github.io/2018/10/11/java%E5%9F%BA%E7%A1%80%E5%A4%A7%E7%BA%B2/</loc>
     <lastmod>2018-10-18T02:26:09.000Z</lastmod>
