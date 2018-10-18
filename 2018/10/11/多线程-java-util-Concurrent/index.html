@@ -415,8 +415,7 @@ height:40vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>更多Java基础系列文章，参见<a href="https://whetherlove.github.io/2018/10/11/Java基础大纲/">Java基础大纲</a></p>
-<p>Java 5 添加了一个新的包到 Java 平台，java.util.concurrent 包。这个包包含有一系列能够让 Java 的并发编程变得更加简单轻松的类。</p>
+        <p>Java 5 添加了一个新的包到 Java 平台，java.util.concurrent 包。这个包包含有一系列能够让 Java 的并发编程变得更加简单轻松的类。</p>
 <h2 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h2><p>BlockingQueue 具有 4 组不同的方法用于插入、移除以及对队列中的元素进行检查。如果请求的操作不能得到立即执行的话，每个方法的表现也不同。这些方法如下：<br><img src="/images/blocking_queue.png" alt="BlockingQueue"><br>四组不同的行为方式解释：</p>
 <ul>
 <li><p>抛异常：如果试图的操作无法立即执行，抛一个异常。</p>
@@ -555,6 +554,7 @@ height:40vh;
 <p>1）创建泛型 AtomicReference<br>使用 Java 泛型来创建一个泛型 AtomicReference：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AtomicReference&lt;String&gt; atomicString =<span class="keyword">new</span> AtomicReference&lt;String&gt;();</span><br></pre></td></tr></table></figure></p>
 <p>2）获取 AtomicReference 引用<br>你可以通过 AtomicReference 的 get() 方法来获取保存在 AtomicReference 里的引用。如果你的 AtomicReference 是非泛型的，get() 方法将返回一个 Object 类型的引用。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AtomicReference&lt;String&gt; atomicReference =</span><br><span class="line">	<span class="keyword">new</span> AtomicReference&lt;String&gt;(<span class="string">"first value referenced"</span>);</span><br><span class="line">String reference = atomicReference.get();</span><br></pre></td></tr></table></figure></p>
 <p>参考文档：<br><a href="http://tutorials.jenkov.com/java-util-concurrent/index.html" target="_blank" rel="noopener">Jenkov.com/java-util-concurrent</a></p>
+<p>更多Java基础系列文章，参见<a href="https://whetherlove.github.io/2018/10/11/Java基础大纲/">Java基础大纲</a></p>
 
     </article>
     <!-- license  -->
@@ -563,7 +563,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/11/多线程-java-util-Concurrent/">https://whetherlove.github.io/2018/10/11/多线程-java-util-Concurrent/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/11/多线程-java-util-Concurrent/">October 11th 2018, 11:02:50 am</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/11/多线程-java-util-Concurrent/">October 11th 2018, 6:10:04 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/11/多线程-java-util-Concurrent/">October 18th 2018, 10:31:25 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1271,9 +1271,43 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 37
+        Total : 39
         </div>
         <!-- search  -->
         
@@ -1289,17 +1323,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-vs-NIO/" >IO vs. NIO</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-io/" >IO-java.io</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-文件系统/" >IO-文件系统</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
         </li>
     
     
@@ -1314,7 +1353,17 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1325,11 +1374,6 @@ top:40vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1354,17 +1398,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1374,12 +1413,32 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
@@ -1394,17 +1453,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1414,7 +1468,7 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -1429,16 +1483,6 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Spring中的bean/" >Spring中的bean</a>
         </li>
     
@@ -1449,22 +1493,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
@@ -1487,13 +1531,13 @@ top:40vh;
     
         <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
     
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
+    
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
     
         <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
-    
-        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     

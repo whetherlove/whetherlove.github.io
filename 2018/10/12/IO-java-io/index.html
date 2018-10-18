@@ -286,7 +286,7 @@ height:40vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">411</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.5k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -417,24 +417,59 @@ height:40vh;
     <article class="article-entry">
         <p>IO关注两类对象，一类是数据对象，一类是IO流对象。</p>
 <p>数据对象关注数据从哪读，往哪写。对应data source 与 data destination</p>
-<p>IO流对象是是一系列流动数据，流对象链接这数据对象。</p>
-<p>IO流简单来说就是Input和Output流，IO流主要是用来处理设备之间的数据传输，Java对于数据的操作都是通过流实现，而java用于操作流的对象都在IO包中。</p>
+<p>IO流对象是是一系列流动数据，流对象链接这数据对象。<br><img src="/images/io_stream.png" alt="IO流"><br>IO流简单来说就是Input和Output流，IO流主要是用来处理设备之间的数据传输，Java对于数据的操作都是通过流实现，而java用于操作流的对象都在IO包中。</p>
 <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按操作数据分为：字节流和字符流。 如：Reader和InpurStream<br>按流向分：输入流和输出流。如：InputStream和OutputStream</p>
 <p>IO流常用的基类：<br>         InputStream    ，    OutputStream</p>
 <p>字符流的抽象基类：<br>         Reader       ，         Writer</p>
 <p>由上面四个类派生的子类名称都是以其父类名作为子类的后缀：<br>如：FileReader和FileInputStream</p>
 <h2 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h2><p>字符流中的对象融合了编码表，也就是系统默认的编码表。我们的系统一般都是GBK编码。<br>字符流只用来处理文本数据，字节流用来处理媒体数据。</p>
 <p>数据最常见的表现方式是文件，字符流用于操作文件的子类一般是FileReader和FileWriter。</p>
-<p>字符流读写：<br>注意事项：</p>
+<h3 id="字符流读写："><a href="#字符流读写：" class="headerlink" title="字符流读写："></a>字符流读写：</h3><p>注意事项：</p>
 <ul>
-<li>写入文件后必须要用flush()刷新。</li>
-<li>用完流后记得要关闭流</li>
-<li>使用流对象要抛出IO异常</li>
-<li>定义文件路径时，可以用“/”或者“\”。</li>
-<li>在创建一个文件时，如果目录下有同名文件将被覆盖。</li>
-<li>在读取文件时，必须保证该文件已存在，否则出异常</li>
+<li><p>写入文件后必须要用flush()刷新。</p>
+</li>
+<li><p>用完流后记得要关闭流。</p>
+</li>
+<li><p>使用流对象要抛出IO异常。</p>
+</li>
+<li><p>定义文件路径时，可以用“/”或者“\”。</p>
+</li>
+<li><p>在创建一个文件时，如果目录下有同名文件将被覆盖。</p>
+</li>
+<li><p>在读取文件时，必须保证该文件已存在，否则出异常。</p>
+</li>
 </ul>
-<p><strong>UNDER CONSTRUCTION</strong></p>
+<h3 id="文件写出一例"><a href="#文件写出一例" class="headerlink" title="文件写出一例"></a>文件写出一例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">FileWriter fw = <span class="keyword">new</span> FileWriter(<span class="string">"F:\\1.txt"</span>);<span class="comment">//目的是明确数据要存放的目的地。  </span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//调用write的方法将字符串写到流中  </span></span><br><span class="line">fw.write(<span class="string">"hello world!"</span>);  </span><br><span class="line">      </span><br><span class="line"><span class="comment">//刷新流对象缓冲中的数据，将数据刷到目的地中  </span></span><br><span class="line">fw.flush();  </span><br><span class="line"></span><br><span class="line"><span class="comment">//没有flush的数据还在缓存中，不会被立即看到</span></span><br><span class="line">fw.write(<span class="string">"first_test"</span>);  </span><br><span class="line"></span><br><span class="line"><span class="comment">//关闭流资源 close()方法中会首先执行一次flush(); </span></span><br><span class="line">fw.close();</span><br></pre></td></tr></table></figure>
+<h3 id="文件读入一例"><a href="#文件读入一例" class="headerlink" title="文件读入一例"></a>文件读入一例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FileReader fr = <span class="keyword">new</span> FileReader(<span class="string">"Demo.txt"</span>);  </span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> []  buf = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">6</span>];   </span><br><span class="line"></span><br><span class="line"><span class="comment">//将Denmo中的文件读取到buf数组中。  </span></span><br><span class="line"><span class="keyword">int</span> num = <span class="number">0</span>;      </span><br><span class="line"><span class="keyword">while</span>((num = fr.read(buf))!=-<span class="number">1</span>) &#123;  </span><br><span class="line">	  </span><br><span class="line">    <span class="comment">//String(char[] value , int offest,int count) </span></span><br><span class="line">    <span class="comment">//分配一个新的String,包含从offest开始的count个字符  </span></span><br><span class="line">    System.out.println(<span class="keyword">new</span> String(buf,<span class="number">0</span>,num));  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">'\n'</span>);  </span><br><span class="line">fr.close();</span><br></pre></td></tr></table></figure>
+<h3 id="指定编码"><a href="#指定编码" class="headerlink" title="指定编码"></a>指定编码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> FileOutputStream(<span class="string">"goods1.txt"</span>),<span class="string">"UTF-8"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="字符流的缓冲区：BufferedReader和BufferedWreiter"><a href="#字符流的缓冲区：BufferedReader和BufferedWreiter" class="headerlink" title="字符流的缓冲区：BufferedReader和BufferedWreiter"></a>字符流的缓冲区：BufferedReader和BufferedWreiter</h2><p>缓冲区的出现时为了提高流的操作效率而出现的。将需要被提高效率的流作为参数传递给缓冲区的构造函数。在缓冲区中封装了一个数组，存入数据后一次取出。</p>
+<h3 id="BufferedReader示例"><a href="#BufferedReader示例" class="headerlink" title="BufferedReader示例"></a>BufferedReader示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">FileReader rw = <span class="keyword">new</span> FileReader(<span class="string">"buf.txt"</span>);  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//只要将需要被提高效率的流作为参数传递给缓冲区的构造函数即可  </span></span><br><span class="line">BufferedReader brw = <span class="keyword">new</span> BufferedReader(rw);  </span><br><span class="line">	          </span><br><span class="line"><span class="keyword">for</span>(;;) &#123;  </span><br><span class="line">      String s = brw.readLine();  </span><br><span class="line">      <span class="keyword">if</span>(s==<span class="keyword">null</span>) <span class="keyword">break</span>;  </span><br><span class="line">      System.out.println(s);  </span><br><span class="line">&#125;  </span><br><span class="line">	          </span><br><span class="line">brw.close();<span class="comment">//关闭输入流对象</span></span><br></pre></td></tr></table></figure>
+<p>读取流缓冲区提供了一个一次读一行的方法readline，方便对文本数据的获取。</p>
+<p>readline()只返回回车符前面的字符，不返回回车符。如果是复制的话，必须加入newLine()，写入回车符。newLine()是java提供的多平台换行符写入方法。</p>
+<h3 id="BufferedWriter示例"><a href="#BufferedWriter示例" class="headerlink" title="BufferedWriter示例"></a>BufferedWriter示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个字符写入流对象  </span></span><br><span class="line">FileWriter fw = <span class="keyword">new</span> FileWriter(<span class="string">"buf.txt"</span>);  </span><br><span class="line">	  </span><br><span class="line"><span class="comment">//为了提高字符写入效率，加入了缓冲技术。  </span></span><br><span class="line"><span class="comment">//只要将需要被提高效率的流作为参数传递给缓冲区的构造函数即可  </span></span><br><span class="line">BufferedWriter bfw = <span class="keyword">new</span> BufferedWriter(fw);  </span><br><span class="line"></span><br><span class="line"><span class="comment">//bfw.write("abc\r\nde");  </span></span><br><span class="line"><span class="comment">//bfw.newLine();           这行代码等价于bfw.write("\r\n"),相当于一个跨平台的换行符  </span></span><br><span class="line"><span class="comment">//用到缓冲区就必须要刷新  </span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">1</span>; x &lt; <span class="number">5</span>; x++) &#123;  </span><br><span class="line">      bfw.write(<span class="string">"abc"</span>);  </span><br><span class="line">      bfw.newLine();                  <span class="comment">//java提供了一个跨平台的换行符newLine();  </span></span><br><span class="line">      bfw.flush();  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line">bfw.flush();                         <span class="comment">//刷新缓冲区  </span></span><br><span class="line">bfw.close();                         <span class="comment">//关闭缓冲区，但是必须要先刷新  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注意，关闭缓冲区就是在关闭缓冲中的流对象  </span></span><br><span class="line">fw.close();</span><br></pre></td></tr></table></figure>
+<h2 id="字节流"><a href="#字节流" class="headerlink" title="字节流"></a>字节流</h2><ul>
+<li><p>字节流和字符流的基本操作是相同的，但是要想操作媒体流就需要用到字节流。</p>
+</li>
+<li><p>字节流因为操作的是字节，所以可以用来操作媒体文件。（媒体文件也是以字节存储的）</p>
+</li>
+<li><p>读写字节流：InputStream   输入流（读）和OutputStream  输出流（写）</p>
+</li>
+<li><p>字节流操作可以不用刷新流操作。</p>
+</li>
+<li><p>InputStream特有方法：</p>
+<pre><code>int available();//返回文件中的字节个数
+</code></pre><p>注：可以利用此方法来指定读取方式中传入数组的长度，从而省去循环判断。但是如果文件较大，而虚拟机启动分配的默认内存一般为64M。当文件过大时，此数组长度所占内存空间就会溢出。所以，此方法慎用，当文件不大时，可以使用。</p>
+</li>
+</ul>
+<h3 id="文件复制示例"><a href="#文件复制示例" class="headerlink" title="文件复制示例"></a>文件复制示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyBmp</span><span class="params">()</span> </span>&#123;  </span><br><span class="line"></span><br><span class="line">     FileInputStream fis = <span class="keyword">null</span>;  </span><br><span class="line">     FileOutputStream fos = <span class="keyword">null</span>;  </span><br><span class="line">     <span class="keyword">try</span> &#123;  </span><br><span class="line">         fis = <span class="keyword">new</span> FileInputStream(<span class="string">"F:\\java_Demo\\day9_28\\1.bmp"</span>);            </span><br><span class="line">         fos = <span class="keyword">new</span> FileOutputStream(<span class="string">"F:\\java_Demo\\day9_28\\2.bmp"</span>);           </span><br><span class="line">         <span class="keyword">byte</span>[] copy = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];  </span><br><span class="line">	       <span class="keyword">int</span> len = <span class="number">0</span>;  </span><br><span class="line">         <span class="keyword">while</span>((len=fis.read(copy))!=-<span class="number">1</span>) &#123;  </span><br><span class="line">             fos.write(copy,<span class="number">0</span>,len);  </span><br><span class="line">         &#125;  </span><br><span class="line">     &#125;  </span><br><span class="line">     <span class="keyword">catch</span> (IOException e) &#123;  </span><br><span class="line">         e.printStackTrace();  </span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"复制文件异常"</span>);  </span><br><span class="line">     &#125;  </span><br><span class="line">     <span class="keyword">finally</span> &#123;  </span><br><span class="line">         <span class="keyword">try</span> &#123;  </span><br><span class="line">             <span class="keyword">if</span>(fis!=<span class="keyword">null</span>) fis.close();  </span><br><span class="line">         &#125;  </span><br><span class="line">         <span class="keyword">catch</span> (IOException e) &#123;  </span><br><span class="line">             e.printStackTrace();  </span><br><span class="line">	           <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"读取流"</span>);  </span><br><span class="line">         &#125;  </span><br><span class="line">	  &#125;            </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="字节流缓冲区"><a href="#字节流缓冲区" class="headerlink" title="字节流缓冲区"></a>字节流缓冲区</h3><p>字节流缓冲区跟字符流缓冲区一样，也是为了提高效率。</p>
+<ul>
+<li><p>read()：会将字节byte()提升为int型值。</p>
+</li>
+<li><p>write()：会将int类型转换为byte()类型，保留最后的8位。</p>
+</li>
+</ul>
+<h2 id="管道流"><a href="#管道流" class="headerlink" title="管道流"></a>管道流</h2><p>管道流用于多进程间的通讯。示例如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PipeExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> PipedOutputStream output = <span class="keyword">new</span> PipedOutputStream();</span><br><span class="line">        <span class="keyword">final</span> PipedInputStream  input  = <span class="keyword">new</span> PipedInputStream(output);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Thread thread1 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    output.write(<span class="string">"Hello world, pipe!"</span>.getBytes());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Thread thread2 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">int</span> data = input.read();</span><br><span class="line">                    <span class="keyword">while</span>(data != -<span class="number">1</span>)&#123;</span><br><span class="line">                        System.out.print((<span class="keyword">char</span>) data);</span><br><span class="line">                        data = input.read();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>更多Java基础系列文章，参见<a href="https://whetherlove.github.io/2018/10/11/Java基础大纲/">Java基础大纲</a></p>
 
     </article>
@@ -444,7 +479,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">https://whetherlove.github.io/2018/10/12/IO-java-io/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">October 12th 2018, 5:28:04 pm</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">October 12th 2018, 6:33:57 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-io/">October 15th 2018, 2:35:39 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -452,12 +487,17 @@ height:40vh;
     <ul class="post-paginator">
         <li class="next">
             
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/10/12/IO-vs-NIO/" title= "IO vs. NIO">
+                    <div class="nextTitle">IO vs. NIO</div>
+                </a>
+            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/10/12/IO-文件系统/" title= "IO-文件系统">
-                    <div class="prevTitle">IO-文件系统</div>
+                <a href= "/2018/10/12/IO-java-nio/" title= "IO-java.nio">
+                    <div class="prevTitle">IO-java.nio</div>
                 </a>
             
         </li>
@@ -585,7 +625,7 @@ top:40vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分类"><span class="toc-number">1.</span> <span class="toc-text">分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符流"><span class="toc-number">2.</span> <span class="toc-text">字符流</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分类"><span class="toc-number">1.</span> <span class="toc-text">分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符流"><span class="toc-number">2.</span> <span class="toc-text">字符流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字符流读写："><span class="toc-number">2.1.</span> <span class="toc-text">字符流读写：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件写出一例"><span class="toc-number">2.2.</span> <span class="toc-text">文件写出一例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件读入一例"><span class="toc-number">2.3.</span> <span class="toc-text">文件读入一例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指定编码"><span class="toc-number">2.4.</span> <span class="toc-text">指定编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符流的缓冲区：BufferedReader和BufferedWreiter"><span class="toc-number">3.</span> <span class="toc-text">字符流的缓冲区：BufferedReader和BufferedWreiter</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BufferedReader示例"><span class="toc-number">3.1.</span> <span class="toc-text">BufferedReader示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BufferedWriter示例"><span class="toc-number">3.2.</span> <span class="toc-text">BufferedWriter示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字节流"><span class="toc-number">4.</span> <span class="toc-text">字节流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件复制示例"><span class="toc-number">4.1.</span> <span class="toc-text">文件复制示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字节流缓冲区"><span class="toc-number">4.2.</span> <span class="toc-text">字节流缓冲区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管道流"><span class="toc-number">5.</span> <span class="toc-text">管道流</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -1147,9 +1187,43 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 37
+        Total : 39
         </div>
         <!-- search  -->
         
@@ -1165,17 +1239,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-vs-NIO/" >IO vs. NIO</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-io/" >IO-java.io</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-文件系统/" >IO-文件系统</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
         </li>
     
     
@@ -1190,7 +1269,17 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1201,11 +1290,6 @@ top:40vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1230,17 +1314,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1250,12 +1329,32 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
@@ -1270,17 +1369,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1290,7 +1384,7 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -1305,16 +1399,6 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Spring中的bean/" >Spring中的bean</a>
         </li>
     
@@ -1325,22 +1409,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
@@ -1363,13 +1447,13 @@ top:40vh;
     
         <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
     
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
+    
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
     
         <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
-    
-        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     

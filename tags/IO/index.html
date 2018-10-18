@@ -357,6 +357,39 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/12/IO-vs-NIO/" >
+            
+                <span>IO vs. NIO</span>
+        </a>
+        <div class="abstract-content">
+            面向流与面向缓冲Java NIO和IO之间第一个最大的区别是，IO是面向流的，NIO是面向缓冲区的。 Java IO面向流意味着每次从流中读一个或多个字节，直至读取所有字节，它们没有被缓存在任何地方。此外，它不能前后移动流中的数据。如果需要前后移动从流中读取的数据，需要先将它缓存到一个缓冲区。 Java NIO的缓冲导向方法略有不同。数据读取到一个它稍后处理的缓冲区，需要时可在缓冲区中前后移动。这就增加了处理过程中的灵活性。但是，还需要检查是否该缓冲区中包含所有您需要处理的数据。而且，需确保当更多的数据读入缓冲区时，不要覆盖缓冲区里尚未处理的数据。
+阻塞与非阻塞IOJava IO的各种流...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "IO">IO</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/12/IO-java-io/" >
             
                 <span>IO-java.io</span>
@@ -364,10 +397,51 @@
         <div class="abstract-content">
             IO关注两类对象，一类是数据对象，一类是IO流对象。
 数据对象关注数据从哪读，往哪写。对应data source 与 data destination
-IO流对象是是一系列流动数据，流对象链接这数据对象。
-IO流简单来说就是Input和Output流，IO流主要是用来处理设备之间的数据传输，Java对于数据的操作都是通过流实现，而java用于操作流的对象都在IO包中。
+IO流对象是是一系列流动数据，流对象链接这数据对象。IO流简单来说就是Input和Output流，IO流主要是用来处理设备之间的数据传输，Java对于数据的操作都是通过流实现，而java用于操作流的对象都在IO包中。
 分类按操作数据分为：字节流和字符流。 如：Reader和InpurStream按流向分：输入流和输出流。如：InputStream和OutputStream
-IO流常用的基类：         InputStream   ...
+IO流常用的基类：         InputStream    ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "IO">IO</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/12/IO-java-nio/" >
+            
+                <span>IO-java.nio</span>
+        </a>
+        <div class="abstract-content">
+            NIO概述Java NIO（New IO）是从Java 1.4版本开始引入的一个新的IO API，可以替代标准的Java IO API。
+Java NIO 由以下几个核心部分组成：
+
+Channels
+Buffers
+Selectors
+
+虽然Java NIO 中除此之外还有很多类和组件，但在我看来，Channel，Buffer 和 Selector 构成了核心的API。其它组件，如Pipe和FileLock，只不过是与三个核心组件共同使用的工具类。
+ChannelChannel和Java NIO的通道类似流，但又有些不同：
+
+既可以从通道中读取数据，又可以写数据到通道。但流的读写通常是...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1062,9 +1136,43 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 37
+        Total : 39
         </div>
         <!-- search  -->
         
@@ -1080,17 +1188,22 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-vs-NIO/" >IO vs. NIO</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-io/" >IO-java.io</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-文件系统/" >IO-文件系统</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
         </li>
     
     
@@ -1105,7 +1218,17 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1116,11 +1239,6 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1145,17 +1263,12 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1165,12 +1278,32 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
@@ -1185,17 +1318,12 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1205,7 +1333,7 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -1220,16 +1348,6 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Spring中的bean/" >Spring中的bean</a>
         </li>
     
@@ -1240,22 +1358,22 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
@@ -1278,13 +1396,13 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
     
         <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
     
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
+    
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
     
         <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
-    
-        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     

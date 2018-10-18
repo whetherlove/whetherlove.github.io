@@ -415,8 +415,7 @@ height:40vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>更多Java基础系列文章，参见<a href="https://whetherlove.github.io/2018/10/11/Java基础大纲/">Java基础大纲</a></p>
-<h2 id="竞态条件-amp-临界区-race-condition-amp-critical-section"><a href="#竞态条件-amp-临界区-race-condition-amp-critical-section" class="headerlink" title="竞态条件 &amp; 临界区 (race condition &amp; critical section)"></a>竞态条件 &amp; 临界区 (race condition &amp; critical section)</h2><p>当两个线程竞争同一资源时，如果对资源的访问顺序敏感，就称存在竞态条件。导致竞态条件发生的代码区称作临界区。 在临界区中使用适当的同步就可以避免竞态条件。<br>多线程同时执行下面的代码可能会出错<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">long</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">long</span> value)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.count = <span class="keyword">this</span>.count + value;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <h2 id="竞态条件-amp-临界区-race-condition-amp-critical-section"><a href="#竞态条件-amp-临界区-race-condition-amp-critical-section" class="headerlink" title="竞态条件 &amp; 临界区 (race condition &amp; critical section)"></a>竞态条件 &amp; 临界区 (race condition &amp; critical section)</h2><p>当两个线程竞争同一资源时，如果对资源的访问顺序敏感，就称存在竞态条件。导致竞态条件发生的代码区称作临界区。 在临界区中使用适当的同步就可以避免竞态条件。<br>多线程同时执行下面的代码可能会出错<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">long</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">long</span> value)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.count = <span class="keyword">this</span>.count + value;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>想象下线程A和B同时执行同一个Counter对象的add()方法，我们无法知道操作系统何时会在两个线程之间切换。JVM并不是将这段代码视为单条指令来执行的，而是按照下面的顺序：</p>
 <p>1)从内存获取 this.count 的值放到寄存器</p>
 <p>2)将寄存器中的值增加value</p>
@@ -494,6 +493,7 @@ height:40vh;
 <li>使用可重入锁</li>
 </ul>
 <p>参考文档：<br><a href="http://tutorials.jenkov.com/java-concurrency/index.html" target="_blank" rel="noopener">Jenkov.com/java-concurrency</a></p>
+<p>更多Java基础系列文章，参见<a href="https://whetherlove.github.io/2018/10/11/Java基础大纲/">Java基础大纲</a></p>
 
     </article>
     <!-- license  -->
@@ -502,7 +502,7 @@ height:40vh;
             <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
             <p>原文链接：<a href="https://whetherlove.github.io/2018/10/11/多线程-容易出现的问题/">https://whetherlove.github.io/2018/10/11/多线程-容易出现的问题/</a>
             <p>发表日期：<a href="https://whetherlove.github.io/2018/10/11/多线程-容易出现的问题/">October 11th 2018, 6:20:00 pm</a>
-            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/11/多线程-容易出现的问题/">October 11th 2018, 6:29:26 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/11/多线程-容易出现的问题/">October 18th 2018, 10:33:09 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1210,9 +1210,43 @@ top:40vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 37
+        Total : 39
         </div>
         <!-- search  -->
         
@@ -1228,17 +1262,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-vs-NIO/" >IO vs. NIO</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-io/" >IO-java.io</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-文件系统/" >IO-文件系统</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
         </li>
     
     
@@ -1253,7 +1292,17 @@ top:40vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1264,11 +1313,6 @@ top:40vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1293,17 +1337,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1313,12 +1352,32 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
@@ -1333,17 +1392,12 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1353,7 +1407,7 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -1368,16 +1422,6 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Spring中的bean/" >Spring中的bean</a>
         </li>
     
@@ -1388,22 +1432,22 @@ top:40vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
@@ -1426,13 +1470,13 @@ top:40vh;
     
         <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
     
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
+    
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
     
         <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
-    
-        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     

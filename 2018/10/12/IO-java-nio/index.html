@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="疯狂的小鸡">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="疯狂的小鸡">
+    
+    <meta name="keywords" content="IT技术,爬坑,疯狂的小鸡">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>IO-java.nio · 疯狂的小鸡</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-126697462-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >疯狂的小鸡</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">IO-java.nio</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>疯狂的小鸡</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:40vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            IO-java.nio
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "IO">IO</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">4.7k</span>阅读时长: <span class="post-count reading-time">18 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/10/12</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="NIO概述"><a href="#NIO概述" class="headerlink" title="NIO概述"></a>NIO概述</h2><p>Java NIO（New IO）是从Java 1.4版本开始引入的一个新的IO API，可以替代标准的Java IO API。</p>
+<p>Java NIO 由以下几个核心部分组成：</p>
+<ul>
+<li>Channels</li>
+<li>Buffers</li>
+<li>Selectors</li>
+</ul>
+<p>虽然Java NIO 中除此之外还有很多类和组件，但在我看来，Channel，Buffer 和 Selector 构成了核心的API。其它组件，如Pipe和FileLock，只不过是与三个核心组件共同使用的工具类。</p>
+<h2 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h2><p>Channel和Java NIO的通道类似流，但又有些不同：</p>
+<ul>
+<li><p>既可以从通道中读取数据，又可以写数据到通道。但流的读写通常是单向的。</p>
+</li>
+<li><p>通道可以异步地读写。</p>
+</li>
+<li><p>通道中的数据总是要先读到一个Buffer，或者总是要从一个Buffer中写入。</p>
+</li>
+</ul>
+<p>Java NIO中最重要的通道的实现：</p>
+<ul>
+<li><p>FileChannel：从文件中读写数据。</p>
+</li>
+<li><p>DatagramChannel：能通过UDP读写网络中的数据。</p>
+</li>
+<li><p>SocketChannel：能通过TCP读写网络中的数据。</p>
+</li>
+<li><p>ServerSocketChannel：可以监听新进来的TCP连接，像Web服务器那样。对每一个新进来的连接都会创建一个SocketChannel。</p>
+</li>
+</ul>
+<h3 id="FileChannel"><a href="#FileChannel" class="headerlink" title="FileChannel"></a>FileChannel</h3><p>Java NIO中的FileChannel是一个连接到文件的通道。可以通过文件通道读写文件。</p>
+<p>FileChannel无法设置为非阻塞模式，它总是运行在阻塞模式下。</p>
+<p>1）打开FileChannel<br>在使用FileChannel之前，必须先打开它。但是，我们无法直接打开一个FileChannel，需要通过使用一个InputStream、OutputStream或RandomAccessFile的getChannel方法来获取一个FileChannel实例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile aFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"data/nio-data.txt"</span>, <span class="string">"rw"</span>);  </span><br><span class="line">FileChannel inChannel = aFile.getChannel();</span><br></pre></td></tr></table></figure></p>
+<p>2）从FileChannel读取数据<br>调用FileChannel.read()方法。该方法将数据从FileChannel读取到Buffer中。</p>
+<p>read()方法返回的int值表示了有多少字节被读到了Buffer中。如果返回-1，表示到了文件末尾。</p>
+<p>3）向FileChannel写数据<br>使用FileChannel.write()方法向FileChannel写数据，该方法的参数是一个Buffer。FileChannel.write()是在while循环中调用的。</p>
+<p>因为无法保证write()方法一次能向FileChannel写入多少字节，因此需要重复调用write()方法，直到Buffer中已经没有尚未写入通道的字节。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(buf.hasRemaining()) &#123;  </span><br><span class="line">    channel.write(buf);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>4）关闭FileChannel<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.close();</span><br></pre></td></tr></table></figure></p>
+<p>5）FileChannel的position方法<br>有时可能需要在FileChannel的某个特定位置进行数据的读/写操作。可以通过调用position()方法获取FileChannel的当前位置。也可以通过调用position(long pos)方法设置FileChannel的当前位置。</p>
+<p>6）FileChannel的size方法<br>FileChannel实例的size()方法将返回该实例所关联文件的大小</p>
+<p>7）FileChannel的truncate方法<br>可以使用FileChannel.truncate()方法截取一个文件。截取文件时，文件中指定长度后面的部分将被删除。</p>
+<p>8）FileChannel的force方法<br>FileChannel.force()方法将通道里尚未写入磁盘的数据强制写到磁盘上。出于性能方面的考虑，操作系统会将数据缓存在内存中，所以无法保证写入到FileChannel里的数据一定会即时写到磁盘上。要保证这一点，需要调用force()方法。</p>
+<p>force()方法有一个boolean类型的参数，指明是否同时将文件元数据（权限信息等）写到磁盘上。</p>
+<h3 id="SocketChannel"><a href="#SocketChannel" class="headerlink" title="SocketChannel"></a>SocketChannel</h3><p>Java NIO中的SocketChannel是一个连接到TCP网络套接字的通道。可以通过以下2种方式创建：</p>
+<ul>
+<li><p>打开一个SocketChannel并连接到互联网上的某台服务器。</p>
+</li>
+<li><p>一个新连接到达ServerSocketChannel时，会创建一个SocketChannel。</p>
+</li>
+</ul>
+<p>1）打开 SocketChannel<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SocketChannel socketChannel = SocketChannel.open();  </span><br><span class="line">socketChannel.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">"http://jenkov.com"</span>, <span class="number">80</span>));</span><br></pre></td></tr></table></figure></p>
+<p>2）关闭 SocketChannel<br>当用完SocketChannel之后调用SocketChannel.close()关闭SocketChannel。</p>
+<p>3）SocketChannel阻塞读写<br>同FileChannel</p>
+<p>4）非阻塞模式<br>可以设置 SocketChannel 为非阻塞模式（non-blocking mode）.设置之后，就可以在异步模式下调用connect(), read() 和write()了。非阻塞模式与选择器搭配会工作的更好，通过将一或多个SocketChannel注册到Selector，可以询问选择器哪个通道已经准备好了读取，写入等。</p>
+<ul>
+<li><p>connect()<br>如果SocketChannel在非阻塞模式下，此时调用connect()，该方法可能在连接建立之前就返回了。为了确定连接是否建立，可以调用finishConnect()的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">socketChannel.configureBlocking(<span class="keyword">false</span>);  </span><br><span class="line">socketChannel.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">"http://jenkov.com"</span>, <span class="number">80</span>));  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">while</span>(! socketChannel.finishConnect() )&#123;  </span><br><span class="line">	   <span class="comment">//wait, or do something else...  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>write()<br>非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了。所以需要在循环中调用write()。</p>
+</li>
+<li><p>read()<br>非阻塞模式下,read()方法在尚未读取到任何数据时可能就返回了。所以需要关注它的int返回值，它会告诉你读取了多少字节。</p>
+</li>
+</ul>
+<h3 id="ServerSocketChannel"><a href="#ServerSocketChannel" class="headerlink" title="ServerSocketChannel"></a>ServerSocketChannel</h3><p>ServerSocketChannel 是一个可以监听新进来的TCP连接的通道，就像标准IO中的ServerSocket一样。ServerSocketChannel类在 java.nio.channels包中。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();  </span><br><span class="line">	  </span><br><span class="line">serverSocketChannel.socket().bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">9999</span>));  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;  </span><br><span class="line">    SocketChannel socketChannel =  serverSocketChannel.accept();  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//do something with socketChannel...  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>1）打开 ServerSocketChannel<br>通过调用 ServerSocketChannel.open() 方法来打开ServerSocketChannel。</p>
+<p>2）关闭 ServerSocketChannel<br>通过调用ServerSocketChannel.close() 方法来关闭ServerSocketChannel。</p>
+<p>3）监听新进来的连接<br>通过 ServerSocketChannel.accept() 方法监听新进来的连接。当 accept()方法返回的时候，它返回一个包含新进来的连接的 SocketChannel。因此，accept()方法会一直阻塞到有新连接到达。 通常不会仅仅只监听一个连接，在while循环中调用 accept()方法。</p>
+<p>4）非阻塞模式<br>ServerSocketChannel可以设置成非阻塞模式。在非阻塞模式下，accept() 方法会立刻返回，如果还没有新进来的连接，返回的将是null。 因此，需要检查返回的SocketChannel是否是null。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();  </span><br><span class="line">	  </span><br><span class="line">serverSocketChannel.socket().bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">9999</span>));  </span><br><span class="line">serverSocketChannel.configureBlocking(<span class="keyword">false</span>);  </span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;  </span><br><span class="line">    SocketChannel socketChannel = serverSocketChannel.accept();  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span>(socketChannel != <span class="keyword">null</span>)&#123;  </span><br><span class="line">    <span class="comment">//do something with socketChannel...  </span></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="DatagramChannel"><a href="#DatagramChannel" class="headerlink" title="DatagramChannel"></a>DatagramChannel</h3><p>DatagramChannel是一个能收发UDP包的通道。因为UDP是无连接的网络协议，所以不能像其它通道那样读取和写入。它发送和接收的是数据包。</p>
+<p>1）打开 DatagramChannel<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DatagramChannel channel = DatagramChannel.open();  </span><br><span class="line">channel.socket().bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">9999</span>));</span><br></pre></td></tr></table></figure></p>
+<p>2）接收数据<br>通过receive()方法从DatagramChannel接收数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);  </span><br><span class="line">buf.clear();  </span><br><span class="line">channel.receive(buf);</span><br></pre></td></tr></table></figure></p>
+<p>receive()方法会将接收到的数据包内容复制到指定的Buffer. 如果Buffer容不下收到的数据，多出的数据将被丢弃。</p>
+<p>3）发送数据<br>通过send()方法从DatagramChannel发送数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String newData = <span class="string">"New String to write to file"</span> + System.currentTimeMillis();  </span><br><span class="line">  </span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);  </span><br><span class="line">buf.clear();  </span><br><span class="line">buf.put(newData.getBytes());  </span><br><span class="line">buf.flip();  </span><br><span class="line">	  </span><br><span class="line"><span class="keyword">int</span> bytesSent = channel.send(buf, <span class="keyword">new</span> InetSocketAddress(<span class="string">"jenkov.com"</span>, <span class="number">80</span>));</span><br></pre></td></tr></table></figure></p>
+<p>这个例子发送一串字符到”jenkov.com”服务器的UDP端口80。 因为服务端并没有监控这个端口，所以什么也不会发生。也不会通知你发出的数据包是否已收到，因为UDP在数据传送方面没有任何保证。</p>
+<p>4）连接到特定的地址<br>可以将DatagramChannel“连接”到网络中的特定地址的。由于UDP是无连接的，连接到特定地址并不会像TCP通道那样创建一个真正的连接。而是锁住DatagramChannel ，让其只能从特定地址收发数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">"jenkov.com"</span>, <span class="number">80</span>));</span><br></pre></td></tr></table></figure></p>
+<h3 id="通道之间的数据传输"><a href="#通道之间的数据传输" class="headerlink" title="通道之间的数据传输"></a>通道之间的数据传输</h3><p>FileChannel允许通道间的复制，复制双方有一方为FileChannel即可。<br>若接收方为FileChannel，transferFrom()方法可以将数据从源通道传输到FileChannel中。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile fromFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"fromFile.txt"</span>, <span class="string">"rw"</span>);  </span><br><span class="line">FileChannel      fromChannel = fromFile.getChannel();  </span><br><span class="line"> </span><br><span class="line">RandomAccessFile toFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"toFile.txt"</span>, <span class="string">"rw"</span>);  </span><br><span class="line">FileChannel      toChannel = toFile.getChannel();  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">long</span> position = <span class="number">0</span>;  </span><br><span class="line"><span class="keyword">long</span> count = fromChannel.size();  </span><br><span class="line">  </span><br><span class="line">toChannel.transferFrom(position, count, fromChannel);</span><br></pre></td></tr></table></figure></p>
+<p>若传输方为FileChannel，可使用transferTo()方法。</p>
+<h2 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h2><p>Java NIO中的Buffer用于和NIO通道进行交互。数据是从通道读入缓冲区，从缓冲区写入到通道中的。 缓冲区本质上是一块可以写入数据，然后可以从中读取数据的内存。这块内存被包装成NIO Buffer对象，并提供了一组方法，用来方便的访问该块内存。</p>
+<p>使用Buffer读写数据一般遵循以下四个步骤：<br>1）写入数据到Buffer<br>2）调用flip()方法<br>3）从Buffer中读取数据<br>4）调用clear()方法或者compact()方法</p>
+<p>当向buffer写入数据时，buffer会记录下写了多少数据。一旦要读取数据，需要通过flip()方法将Buffer从写模式切换到读模式。在读模式下，可以读取之前写入到buffer的所有数据。</p>
+<p>一旦读完了所有的数据，就需要清空缓冲区，让它可以再次被写入。有两种方式能清空缓冲区：调用clear()或compact()方法。clear()方法会清空整个缓冲区。compact()方法只会清除已经读过的数据。任何未读的数据都被移到缓冲区的起始处，新写入的数据将放到缓冲区未读数据的后面。</p>
+<h3 id="Buffer的三大属性"><a href="#Buffer的三大属性" class="headerlink" title="Buffer的三大属性"></a>Buffer的三大属性</h3><ul>
+<li><p>capacity<br>作为一个内存块，Buffer有一个固定的大小值，也叫“capacity”.你只能往里写capacity个byte、long，char等类型。一旦Buffer满了，需要将其清空（通过读数据或者清除数据）才能继续写数据往里写数据。</p>
+</li>
+<li><p>position<br>当你写数据到Buffer中时，position表示当前的位置。初始的position值为0.当一个byte、long等数据写到Buffer后， position会向前移动到下一个可插入数据的Buffer单元。position最大可为capacity – 1。<br>当读取数据时，也是从某个特定位置读。当将Buffer从写模式切换到读模式，position会被重置为0。当从Buffer的position处读取数据时，position向前移动到下一个可读的位置。</p>
+</li>
+<li><p>limit<br>在写模式下，Buffer的limit表示你最多能往Buffer里写多少数据。 写模式下，limit等于Buffer的capacity。<br>当切换Buffer到读模式时， limit表示你最多能读到多少数据。因此，当切换Buffer到读模式时，limit会被设置成写模式下的position值。</p>
+</li>
+</ul>
+<h3 id="Buffer类型："><a href="#Buffer类型：" class="headerlink" title="Buffer类型："></a>Buffer类型：</h3><ul>
+<li>ByteBuffer</li>
+<li>MappedByteBuffer</li>
+<li>CharBuffer</li>
+<li>DoubleBuffer</li>
+<li>FloatBuffer</li>
+<li>IntBuffer</li>
+<li>LongBuffer</li>
+<li>ShortBuffer</li>
+</ul>
+<p>这些Buffer类型代表了不同的数据类型。换句话说，就是可以通过char，short，int，long，float 或 double类型来操作缓冲区中的字节。MappedByteBuffer 有些特别，在后面再讲。</p>
+<h3 id="Buffer的操作"><a href="#Buffer的操作" class="headerlink" title="Buffer的操作"></a>Buffer的操作</h3><p>1）Buffer的分配<br>要想获得一个Buffer对象首先要进行分配。 每一个Buffer类都有一个allocate方法。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);</span><br><span class="line">CharBuffer buf = CharBuffer.allocate(<span class="number">1024</span>);</span><br></pre></td></tr></table></figure></p>
+<p>2) 向Buffer中写数据<br>写数据到Buffer有两种方式：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从Channel写到Buffer。</span></span><br><span class="line"><span class="keyword">int</span> bytesRead = inChannel.read(buf); </span><br><span class="line"><span class="comment">//通过Buffer的put()方法写到Buffer里。</span></span><br><span class="line">buf.put(<span class="number">127</span>);</span><br></pre></td></tr></table></figure></p>
+<p>put方法有很多版本，允许你以不同的方式把数据写入到Buffer中。例如， 写到一个指定的位置，或者把一个字节数组写入到Buffer。</p>
+<p>3) 从Buffer中读取数据<br>从Buffer中读取数据首先要调用flip()方法，读有两种方式：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从Buffer读取数据到Channel。</span></span><br><span class="line"><span class="keyword">int</span> bytesWritten = inChannel.write(buf); </span><br><span class="line"><span class="comment">//使用get()方法从Buffer中读取数据。</span></span><br><span class="line">	<span class="keyword">byte</span> aByte = buf.get();</span><br></pre></td></tr></table></figure></p>
+<p>get方法同样有很多版本，允许你以不同的方式从Buffer中读取数据。</p>
+<p>3) rewind()方法<br>Buffer.rewind()将position设回0，所以你可以重读Buffer中的所有数据。limit保持不变，仍然表示能从Buffer中读取多少个元素（byte、char等）。</p>
+<p>4) clear()与compact()方法<br>一旦读完Buffer中的数据，需要让Buffer准备好再次被写入。可以通过clear()或compact()方法来完成。</p>
+<p>如果调用的是clear()方法，position将被设回0，limit被设置成 capacity的值。换句话说，Buffer 被清空了。Buffer中的数据并未清除，只是这些标记告诉我们可以从哪里开始往Buffer里写数据。 如果Buffer中有一些未读的数据，调用clear()方法，数据将“被遗忘”，意味着不再有任何标记会告诉你哪些数据被读过，哪些还没有。</p>
+<p>如果Buffer中仍有未读的数据，且后续还需要这些数据，但是此时想要先先写些数据，那么使用compact()方法。compact()方法将所有未读的数据拷贝到Buffer起始处。然后将position设到最后一个未读元素正后面。limit属性依然像clear()方法一样，设置成capacity。现在Buffer准备好写数据了，但是不会覆盖未读的数据。</p>
+<p>5) mark()与reset()方法<br>通过调用Buffer.mark()方法，可以标记Buffer中的一个特定position。之后可以通过调用Buffer.reset()方法恢复到这个position。</p>
+<p>6) equals()与compareTo()方法<br>当满足下列条件时，表示两个Buffer相等：</p>
+<ul>
+<li><p>有相同的类型（byte、char、int等）。</p>
+</li>
+<li><p>Buffer中剩余的byte、char等的个数相等。</p>
+</li>
+<li><p>Buffer中所有剩余的byte、char等都相同。</p>
+</li>
+</ul>
+<p>如你所见，equals只是比较Buffer的一部分，不是每一个在它里面的元素都比较。实际上，它只比较Buffer中的剩余元素。</p>
+<p>compareTo()方法比较两个Buffer的剩余元素(byte、char等)， 如果满足下列条件，则认为一个Buffer“小于”另一个Buffer：</p>
+<ul>
+<li><p>第一个不相等的元素小于另一个Buffer中对应的元素。</p>
+</li>
+<li><p>所有元素都相等，但第一个Buffer比另一个先耗尽(第一个Buffer的元素个数比另一个少)。</p>
+</li>
+</ul>
+<h3 id="分散（Scatter）-聚集（Gather）"><a href="#分散（Scatter）-聚集（Gather）" class="headerlink" title="分散（Scatter）/聚集（Gather）"></a>分散（Scatter）/聚集（Gather）</h3><p>分散（scatter）从Channel中读取是指在读操作时将读取的数据写入多个buffer中。因此，Channel将从Channel中读取的数据“分散（scatter）”到多个Buffer中。<br>聚集（gather）写入Channel是指在写操作时将多个buffer的数据写入同一个Channel，因此，Channel 将多个Buffer中的数据“聚集（gather）”后发送到Channel。<br>scatter / gather经常用于需要将传输的数据分开处理的场合，例如传输一个由消息头和消息体组成的消息，你可能会将消息体和消息头分散到不同的buffer中，这样你可以方便的处理消息头和消息体。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer header = ByteBuffer.allocate(<span class="number">128</span>);  </span><br><span class="line">ByteBuffer body   = ByteBuffer.allocate(<span class="number">1024</span>);  </span><br><span class="line">  </span><br><span class="line">ByteBuffer[] bufferArray = &#123; header, body &#125;;  </span><br><span class="line">  </span><br><span class="line">channel.read(bufferArray); </span><br><span class="line"></span><br><span class="line">ByteBuffer header = ByteBuffer.allocate(<span class="number">128</span>);  </span><br><span class="line">ByteBuffer body   = ByteBuffer.allocate(<span class="number">1024</span>);  </span><br><span class="line"> </span><br><span class="line">ByteBuffer[] bufferArray = &#123; header, body &#125;;  </span><br><span class="line">  </span><br><span class="line">channel.write(bufferArray);</span><br></pre></td></tr></table></figure></p>
+<h2 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h2><p>Selector（选择器）是Java NIO中能够检测一到多个NIO通道，并能够知晓通道是否为诸如读写事件做好准备的组件。这样，一个单独的线程可以管理多个channel，从而管理多个网络连接。</p>
+<p>仅用单个线程来处理多个Channels的好处是，只需要更少的线程来处理通道。事实上，可以只用一个线程处理所有的通道。对于操作系统来说，线程之间上下文切换的开销很大，而且每个线程都要占用系统的一些资源（如内存）。因此，使用的线程越少越好。</p>
+<h3 id="Selector的使用"><a href="#Selector的使用" class="headerlink" title="Selector的使用"></a>Selector的使用</h3><p>1）Selector的创建<br>通过调用Selector.open()方法创建一个Selector<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Selector selector = Selector.open();</span><br></pre></td></tr></table></figure></p>
+<p>2）向Selector注册通道<br>为了将Channel和Selector配合使用，必须将channel注册到selector上。通过SelectableChannel.register()方法来实现<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">channel.configureBlocking(<span class="keyword">false</span>);  </span><br><span class="line">SelectionKey key = channel.register(selector, Selectionkey.OP_READ);</span><br></pre></td></tr></table></figure></p>
+<p>与Selector一起使用时，Channel必须处于非阻塞模式下。这意味着不能将FileChannel与Selector一起使用，因为FileChannel不能切换到非阻塞模式。而套接字通道都可以。</p>
+<p>register()方法的第二个参数。这是一个“interest集合”，意思是在通过Selector监听Channel时对什么事件感兴趣。</p>
+<p>可以监听四种不同类型的事件： Connect/Accept/Read/Write</p>
+<p>如果你对不止一种事件感兴趣，那么可以用“位或”操作符将常量连接起来<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;</span><br></pre></td></tr></table></figure></p>
+<p>通道触发了一个事件意思是该事件已经就绪。所以，某个channel成功连接到另一个服务器称为“连接就绪”。一个server socket channel准备好接收新进入的连接称为“接收就绪”。一个有数据可读的通道可以说是“读就绪”。等待写数据的通道可以说是“写就绪”。</p>
+<p>3) SelectionKey<br>当向Selector注册Channel时，register()方法会返回一个SelectionKey对象。这个对象包含了一些你感兴趣的属性：</p>
+<ul>
+<li><p>interest集合<br>interest集合是你所选择的感兴趣的事件集合。可以通过SelectionKey读写interest集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> interestSet = selectionKey.interestOps();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ready集合<br>ready 集合是通道已经准备就绪的操作的集合。在一次选择(Selection)之后，你会首先访问这个ready set。</p>
+</li>
+<li><p>Channel + Selector</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Channel  channel  = selectionKey.channel();  </span><br><span class="line">Selector selector = selectionKey.selector();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>附加的对象<br>可以将一个对象或者更多信息附着到SelectionKey上，这样就能方便的识别某个给定的通道。例如，可以附加 与通道一起使用的Buffer，或是包含聚集数据的某个对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">selectionKey.attach(theObject);  </span><br><span class="line">Object attachedObj = selectionKey.attachment();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可以在用register()方法向Selector注册Channel的时候附加对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SelectionKey key = channel.register(selector, SelectionKey.OP_READ, theObject);</span><br></pre></td></tr></table></figure></p>
+<p>4）通过Selector选择通道<br>一旦向Selector注册了一或多个通道，就可以调用几个重载的select()方法。这些方法返回你所感兴趣的事件（如连接、接受、读或写）已经准备就绪的那些通道。换句话说，如果你对“读就绪”的通道感兴趣，select()方法会返回读事件已经就绪的那些通道。select()方法返回的int值表示有多少通道已经就绪。</p>
+<p>select()阻塞到至少有一个通道在你注册的事件上就绪了。其他线程可调用该Selector的wakeup()方法解除阻塞。</p>
+<p>select(long timeout)和select()一样，除了最长会阻塞timeout毫秒(参数)。 selectNow()不会阻塞，不管什么通道就绪都立刻返回。如果自从前一次选择操作后，没有通道变成可选择的，则此方法直接返回零。</p>
+<p>5）访问就绪通道<br>一旦调用了select()方法，并且返回值表明有一个或更多个通道就绪了，然后可以通过调用selector的selectedKeys()方法，访问“已选择键集（selected key set）”中的就绪通道。可以遍历这个已选择的键集合来访问就绪的通道<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Iterator keyIterator = selectedKeys.iterator();  </span><br><span class="line"><span class="keyword">while</span>(keyIterator.hasNext()) &#123;  </span><br><span class="line">    SelectionKey key = keyIterator.next();  </span><br><span class="line">    <span class="keyword">if</span>(key.isAcceptable()) &#123;  </span><br><span class="line">        <span class="comment">// a connection was accepted by a ServerSocketChannel.  </span></span><br><span class="line">	  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isConnectable()) &#123;  </span><br><span class="line">	        <span class="comment">// a connection was established with a remote server.  </span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isReadable()) &#123;  </span><br><span class="line">	        <span class="comment">// a channel is ready for reading  </span></span><br><span class="line">	  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isWritable()) &#123;  </span><br><span class="line">        <span class="comment">// a channel is ready for writing  </span></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>6）关闭close()<br>用完Selector后调用其close()方法会关闭该Selector，且使注册到该Selector上的所有SelectionKey实例无效。通道本身并不会关闭。</p>
+<h2 id="管道Pipe"><a href="#管道Pipe" class="headerlink" title="管道Pipe"></a>管道Pipe</h2><p>Java NIO 管道是2个线程之间的单向数据连接。Pipe有一个source通道和一个sink通道。数据会被写到sink通道，从source通道读取。</p>
+<p>1）创建管道<br>通过Pipe.open()方法打开管道。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pipe pipe = Pipe.open();</span><br></pre></td></tr></table></figure></p>
+<p>2）向管道写数据<br>要向管道写数据，需要访问sink通道。通过调用SinkChannel的write()方法，将数据写入SinkChannel<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pipe.SinkChannel sinkChannel = pipe.sink();</span><br></pre></td></tr></table></figure></p>
+<p>3）从管道读取数据<br>读取管道的数据，需要访问source通道。调用source通道的read()方法来读取数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pipe.SourceChannel sourceChannel = pipe.source();</span><br></pre></td></tr></table></figure></p>
+<p>更多Java基础系列文章，参见<a href="https://whetherlove.github.io/2018/10/11/Java基础大纲/">Java基础大纲</a></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://whetherlove.github.io">疯狂的小鸡</a>
+            <p>原文链接：<a href="https://whetherlove.github.io/2018/10/12/IO-java-nio/">https://whetherlove.github.io/2018/10/12/IO-java-nio/</a>
+            <p>发表日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-nio/">October 12th 2018, 5:28:04 pm</a>
+            <p>更新日期：<a href="https://whetherlove.github.io/2018/10/12/IO-java-nio/">October 18th 2018, 10:18:04 am</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/10/12/IO-java-io/" title= "IO-java.io">
+                    <div class="nextTitle">IO-java.io</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/10/12/IO-文件系统/" title= "IO-文件系统">
+                    <div class="prevTitle">IO-文件系统</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= MTAyMC80MDA0Ny8xNjU3NA==>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:274381933@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/whetherlove" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/wechat.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:40vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NIO概述"><span class="toc-number">1.</span> <span class="toc-text">NIO概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Channel"><span class="toc-number">2.</span> <span class="toc-text">Channel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FileChannel"><span class="toc-number">2.1.</span> <span class="toc-text">FileChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SocketChannel"><span class="toc-number">2.2.</span> <span class="toc-text">SocketChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ServerSocketChannel"><span class="toc-number">2.3.</span> <span class="toc-text">ServerSocketChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DatagramChannel"><span class="toc-number">2.4.</span> <span class="toc-text">DatagramChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通道之间的数据传输"><span class="toc-number">2.5.</span> <span class="toc-text">通道之间的数据传输</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffer"><span class="toc-number">3.</span> <span class="toc-text">Buffer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Buffer的三大属性"><span class="toc-number">3.1.</span> <span class="toc-text">Buffer的三大属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Buffer类型："><span class="toc-number">3.2.</span> <span class="toc-text">Buffer类型：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Buffer的操作"><span class="toc-number">3.3.</span> <span class="toc-text">Buffer的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分散（Scatter）-聚集（Gather）"><span class="toc-number">3.4.</span> <span class="toc-text">分散（Scatter）/聚集（Gather）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Selector"><span class="toc-number">4.</span> <span class="toc-text">Selector</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Selector的使用"><span class="toc-number">4.1.</span> <span class="toc-text">Selector的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管道Pipe"><span class="toc-number">5.</span> <span class="toc-text">管道Pipe</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 39
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-vs-NIO/" >IO vs. NIO</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-io/" >IO-java.io</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-文件系统/" >IO-文件系统</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-GC垃圾回收机制/" >JVM-GC垃圾回收机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-happens-before规则/" >JVM-happens-before规则</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-Lock/" >多线程-Lock</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-util-Concurrent/" >多线程-java.util.Concurrent</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-lang-Thread/" >多线程-java.lang.Thread</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-并发模型/" >多线程-并发模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/java基础大纲/" >Java基础大纲</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-应用场景/" >Redis入门-应用场景</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-大纲/" >Redis入门-大纲</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-基本数据类型/" >Redis入门-基本数据类型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-管道与事务/" >Redis入门-管道与事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Spring中的bean/" >Spring中的bean</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/02</span><a class="archive-post-title" href= "/2018/10/02/Spring常用注解/" >Spring常用注解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Spring整体架构/" >Spring整体架构</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
+    
+        <span class="sidebar-tag-name" data-tags="IO"><span class="iconfont-archer">&#xe606;</span>IO</span>
+    
+        <span class="sidebar-tag-name" data-tags="Spring"><span class="iconfont-archer">&#xe606;</span>Spring</span>
+    
+        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
+    
+        <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
+    
+        <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
+    
+        <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
+    
+        <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Java基础"><span class="iconfont-archer">&#xe60a;</span>Java基础</span>
+    
+        <span class="sidebar-category-name" data-categories="技术源码"><span class="iconfont-archer">&#xe60a;</span>技术源码</span>
+    
+        <span class="sidebar-category-name" data-categories="技术入门"><span class="iconfont-archer">&#xe60a;</span>技术入门</span>
+    
+        <span class="sidebar-category-name" data-categories="技术资料"><span class="iconfont-archer">&#xe60a;</span>技术资料</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "疯狂的小鸡"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

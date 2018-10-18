@@ -370,6 +370,39 @@ height:40vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/12/IO-vs-NIO/" >
+            
+                <span>IO vs. NIO</span>
+        </a>
+        <div class="abstract-content">
+            面向流与面向缓冲Java NIO和IO之间第一个最大的区别是，IO是面向流的，NIO是面向缓冲区的。 Java IO面向流意味着每次从流中读一个或多个字节，直至读取所有字节，它们没有被缓存在任何地方。此外，它不能前后移动流中的数据。如果需要前后移动从流中读取的数据，需要先将它缓存到一个缓冲区。 Java NIO的缓冲导向方法略有不同。数据读取到一个它稍后处理的缓冲区，需要时可在缓冲区中前后移动。这就增加了处理过程中的灵活性。但是，还需要检查是否该缓冲区中包含所有您需要处理的数据。而且，需确保当更多的数据读入缓冲区时，不要覆盖缓冲区里尚未处理的数据。
+阻塞与非阻塞IOJava IO的各种流...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "IO">IO</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/12/IO-java-io/" >
             
                 <span>IO-java.io</span>
@@ -377,10 +410,51 @@ height:40vh;
         <div class="abstract-content">
             IO关注两类对象，一类是数据对象，一类是IO流对象。
 数据对象关注数据从哪读，往哪写。对应data source 与 data destination
-IO流对象是是一系列流动数据，流对象链接这数据对象。
-IO流简单来说就是Input和Output流，IO流主要是用来处理设备之间的数据传输，Java对于数据的操作都是通过流实现，而java用于操作流的对象都在IO包中。
+IO流对象是是一系列流动数据，流对象链接这数据对象。IO流简单来说就是Input和Output流，IO流主要是用来处理设备之间的数据传输，Java对于数据的操作都是通过流实现，而java用于操作流的对象都在IO包中。
 分类按操作数据分为：字节流和字符流。 如：Reader和InpurStream按流向分：输入流和输出流。如：InputStream和OutputStream
-IO流常用的基类：         InputStream   ...
+IO流常用的基类：         InputStream    ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "IO">IO</a>
+    
+</div>
+
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/12/IO-java-nio/" >
+            
+                <span>IO-java.nio</span>
+        </a>
+        <div class="abstract-content">
+            NIO概述Java NIO（New IO）是从Java 1.4版本开始引入的一个新的IO API，可以替代标准的Java IO API。
+Java NIO 由以下几个核心部分组成：
+
+Channels
+Buffers
+Selectors
+
+虽然Java NIO 中除此之外还有很多类和组件，但在我看来，Channel，Buffer 和 Selector 构成了核心的API。其它组件，如Pipe和FileLock，只不过是与三个核心组件共同使用的工具类。
+ChannelChannel和Java NIO的通道类似流，但又有些不同：
+
+既可以从通道中读取数据，又可以写数据到通道。但流的读写通常是...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -446,12 +520,11 @@ File类File是文件和目录路径名的抽象表示形式，代表文件或者
                 <span>JVM-GC垃圾回收机制</span>
         </a>
         <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-如何判定是“垃圾”没有任何引用，就视为垃圾，所以判定方法如下：
+            如何判定是“垃圾”没有任何引用，就视为垃圾，所以判定方法如下：
 方法一：引用计数算法1） 给对象添加计数器—&gt;如果引用—&gt;计数器+12） 引用失效—&gt;计数器-13） 任何时刻计数器为0—对象不能再使用
 Java中却没有使用这种算法，因为这种算法很难解决对象之间相互引用的情况
 方法二：根搜索法这个算法的基本思想是通过一系列称为“GC Roots”的对象作为起始点，从这些节点向下搜索，搜索所走过的路径称为引用链，当一个对象到GC Roots没有任何引用链（即GC Roots到对象不可达）时，则证明此对象是不可用的。
-那么如何选...
+那么如何选取GCRoots对象呢？在Java语言中，可以作...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -483,11 +556,10 @@ Java中却没有使用这种算法，因为这种算法很难解决对象之间�
                 <span>JVM-类加载机制</span>
         </a>
         <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-JVM类加载机制分为五个部分：加载，验证，准备，解析，初始化
+            JVM类加载机制分为五个部分：加载，验证，准备，解析，初始化
 加载加载是类加载过程中的一个阶段，这个阶段会在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的入口。注意这里不一定非得要从一个Class文件获取，这里既可以从ZIP包中读取（比如从jar包和war包中读取），也可以在运行时计算生成（动态代理），也可以由其它文件生成（比如将JSP文件转换成对应的Class类）。
 验证这一阶段的主要目的是为了确保Class文件的字节流中包含的信息是否符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。
-准备准...
+准备准备阶段是正式为类变量分配内存并设置类变量的初始值...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -519,12 +591,13 @@ JVM类加载机制分为五个部分：加载，验证，准备，解析，初�
                 <span>JVM-happens-before规则</span>
         </a>
         <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须存在happens-before关系。
+            在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须存在happens-before关系。
 happens-before原则规则
 程序次序规则一段代码在单线程中执行的结果是有序的。注意是执行结果，因为虚拟机、处理器会对指令进行重排序（重排序后面会详细介绍）。虽然重排序了，但是并不会影响程序的执行结果，所以程序最终执行的结果与顺序执行的结果是一致的。故而这个规则只对单线程有效，在多线程环境下无法保证正确性。
 
-锁定规则无论是在单线程环境还是多线程环境，一个锁处于被锁定状态，那么必须先执行unlock操作后面才能进行l...
+锁定规则无论是在单线程环境还是多线程环境，一个锁处于被锁定状态，那么必须先执行unlock操作后面才能进行lock操作。
+
+volatile变量规则vola...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -556,9 +629,8 @@ happens-before原则规则
                 <span>JVM-内存模型JMM</span>
         </a>
         <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-从这张图中很直观的看到，程序计数器，虚拟机栈，native栈是线程私有的，堆是线程共有的，现在详细介绍JVM各个区块。
-堆（Heap）是java虚拟机所管理的内存中最大的一块内存区域，也是被各个线程共享的内存区域，该内存区域存放了对象实例及数组（但不是所有的对象实例都在堆中）。其大小通过-Xms(最小值)和-Xmx(最大值)参数设置（最大最小值都要小于1G），前者为启动时申请的最小内存，默认为操作系统物理内存的1/64，后者为JVM可申请的最大内存,默认为物理内存的1/4，默认当空余堆内存小于40%时，JVM会增大堆内存到-Xmx指定的大小...
+            从这张图中很直观的看到，程序计数器，虚拟机栈，native栈是线程私有的，堆是线程共有的，现在详细介绍JVM各个区块。
+堆（Heap）是java虚拟机所管理的内存中最大的一块内存区域，也是被各个线程共享的内存区域，该内存区域存放了对象实例及数组（但不是所有的对象实例都在堆中）。其大小通过-Xms(最小值)和-Xmx(最大值)参数设置（最大最小值都要小于1G），前者为启动时申请的最小内存，默认为操作系统物理内存的1/64，后者为JVM可申请的最大内存,默认为物理内存的1/4，默认当空余堆内存小于40%时，JVM会增大堆内存到-Xmx指定的大小，可通过-XX:MinHeapFreeRatio...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -590,8 +662,7 @@ happens-before原则规则
                 <span>多线程-容易出现的问题</span>
         </a>
         <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-竞态条件 &amp; 临界区 (race condition &amp; critical section)当两个线程竞争同一资源时，如果对资源的访问顺序敏感，就称存在竞态条件。导致竞态条件发生的代码区称作临界区。 在临界区中使用适当的同步就可以避免竞态条件。多线程同时执行下面的代码可能会出错123456public class Counter &#123;    protected long count = 0;    public void add(long value)&#123;        this.count = this.c...
+            竞态条件 &amp; 临界区 (race condition &amp; critical section)当两个线程竞争同一资源时，如果对资源的访问顺序敏感，就称存在竞态条件。导致竞态条件发生的代码区称作临界区。 在临界区中使用适当的同步就可以避免竞态条件。多线程同时执行下面的代码可能会出错123456public class Counter &#123;    protected long count = 0;    public void add(long value)&#123;        this.count = this.count + value;      &#125...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -623,92 +694,11 @@ happens-before原则规则
                 <span>多线程-非阻塞算法</span>
         </a>
         <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-非阻塞算法 vs 阻塞算法阻塞算法会阻塞线程直到请求操作可以被执行。非阻塞算法会通知请求线程操作不能够被执行，并返回。
+            非阻塞算法 vs 阻塞算法阻塞算法会阻塞线程直到请求操作可以被执行。非阻塞算法会通知请求线程操作不能够被执行，并返回。
 使用非阻塞算法的好处非阻塞算法和阻塞算法相比有几个好处。下面让我们分别看一下：
 1）选择
 非阻塞算法的第一个好处是，给了线程一个选择当它们请求的动作不能够被执行时做些什么。不再是被阻塞在那，请求线程关于做什么有了一个选择。有时候，一个线程什么也不能做。在这种情况下，它可以选择阻塞或自我等待，像这样把CPU的使用权让给其它的任务。不过至少给了请求线程一个选择的机会。
-在一个单个的CPU系统可能会挂起一个不能执行请求动作的线程...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/11</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "多线程">多线程</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/11/多线程-Lock/" >
-            
-                <span>多线程-Lock</span>
-        </a>
-        <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-饥饿和公平如果一个线程因为CPU时间全部被其他线程抢走而得不到CPU运行时间，这种状态被称之为“饥饿”。而该线程被“饥饿致死”正是因为它得不到CPU运行时间的机会。解决饥饿的方案被称之为“公平性” – 即所有线程均能公平地获得运行机会。
-Java中导致饥饿的原因：
-
-高优先级线程吞噬所有的低优先级线程的CPU时间。
-线程被永久堵塞在一个等待进入同步块的状态。
-线程在等待一个本身也处于永久等待完成的对象(比如调用这个对象的wait方法)。
-
-首先来看一段简单的同步态代码：12345public class Synchronizer&#123;...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/11</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java">Java</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "多线程">多线程</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/11/多线程-java-util-Concurrent/" >
-            
-                <span>多线程-java.util.Concurrent</span>
-        </a>
-        <div class="abstract-content">
-            更多Java基础系列文章，参见Java基础大纲
-Java 5 添加了一个新的包到 Java 平台，java.util.concurrent 包。这个包包含有一系列能够让 Java 的并发编程变得更加简单轻松的类。
-BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以及对队列中的元素进行检查。如果请求的操作不能得到立即执行的话，每个方法的表现也不同。这些方法如下：四组不同的行为方式解释：
-
-抛异常：如果试图的操作无法立即执行，抛一个异常。
-
-特定值：如果试图的操作无法立即执行，返回一个特定的值(常常是 true / false)。
-
-阻塞：如果试图的...
+在一个单个的CPU系统可能会挂起一个不能执行请求动作的线程，这样可以让其它线程获得CPU的使用权。不过即使...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1456,9 +1446,43 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 37
+        Total : 39
         </div>
         <!-- search  -->
         
@@ -1474,17 +1498,22 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-vs-NIO/" >IO vs. NIO</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-io/" >IO-java.io</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-文件系统/" >IO-文件系统</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
         </li>
     
     
@@ -1499,7 +1528,17 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-类加载机制/" >JVM-类加载机制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-内存模型JMM/" >JVM-内存模型JMM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1510,11 +1549,6 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-容易出现的问题/" >多线程-容易出现的问题</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-非阻塞算法/" >多线程-非阻塞算法</a>
         </li>
     
     
@@ -1539,17 +1573,12 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-集群一致性问题/" >Redis集群-集群一致性问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis配置详解/" >Redis配置详解</a>
         </li>
     
     
@@ -1559,12 +1588,32 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster功能简述/" >Redis集群-Cluster功能简述</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
@@ -1579,17 +1628,12 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Sentinal/" >Redis集群-Sentinal</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
         </li>
     
     
@@ -1599,7 +1643,7 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-持久化/" >Redis入门-持久化</a>
+            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
         </li>
     
     
@@ -1614,16 +1658,6 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-过期策略与内存淘汰机制/" >Redis入门-过期策略与内存淘汰机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Redis入门-高级数据类型/" >Redis入门-高级数据类型</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/05</span><a class="archive-post-title" href= "/2018/10/05/Spring中的bean/" >Spring中的bean</a>
         </li>
     
@@ -1634,22 +1668,22 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/DI的实现/" >DI的实现</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/AOP的实现/" >AOP的实现</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
@@ -1672,13 +1706,13 @@ BlockingQueueBlockingQueue 具有 4 组不同的方法用于插入、移除以�
     
         <span class="sidebar-tag-name" data-tags="源码分析"><span class="iconfont-archer">&#xe606;</span>源码分析</span>
     
+        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
+    
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="技术入门"><span class="iconfont-archer">&#xe606;</span>技术入门</span>
     
         <span class="sidebar-tag-name" data-tags="大纲"><span class="iconfont-archer">&#xe606;</span>大纲</span>
-    
-        <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
         <span class="sidebar-tag-name" data-tags="多线程"><span class="iconfont-archer">&#xe606;</span>多线程</span>
     
