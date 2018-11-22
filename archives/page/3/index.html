@@ -357,37 +357,6 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/09/Redis配置详解/" >
-            
-                <span>Redis配置详解</span>
-        </a>
-        <div class="abstract-content">
-            资料性内容，请善用Ctrl+F
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210310410510610710810911011111211311411511611711811912012112212312412512612712812913...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/09</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-</div>
-
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/09/Redis集群-3-3集群搭建实例/" >
             
                 <span>Redis集群-3+3集群搭建实例</span>
@@ -488,27 +457,24 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-Sentinal/" >
+        <a class="abstract-title" href = "/2018/10/09/Redis配置详解/" >
             
-                <span>Redis集群-Sentinal</span>
+                <span>Redis配置详解</span>
         </a>
         <div class="abstract-content">
-            更多Redis入门系列文章，参见Redis入门-大纲
-Sentinal概述单就主从模式而言，master节点挂了以后，redis不会从slave节点重新选一个做master。使用Sentinal可以很好解决这个问题。当master节点挂了以后，sentinel会在slave中选择一个做为master，并修改它们的配置文件，其他slave的配置文件也会被修改，比如slaveof属性会指向新的master。
-每个sentinel节点其实就是一个redis实例，与主从节点不同的是sentinel节点作用是用于监控redis数据节。由于sentinel也有挂掉的可能，所以一般sentinel也会...
+            资料性内容，请善用Ctrl+F
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210310410510610710810911011111211311411511611711811912012112212312412512612712812913...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/09</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
     
 </div>
 
@@ -522,15 +488,20 @@ Sentinal概述单就主从模式而言，master节点挂了以后，redis不会�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-主从模型/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster功能简述/" >
             
-                <span>Redis集群-主从模型</span>
+                <span>Redis集群-Cluster功能简述</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-主从模式redis单例提供了一种数据缓存方式和丰富的数据操作api，但是将数据完全存储在单个redis中主要存在两个问题：数据备份和数据体量较大造成的性能降低。
-这里redis的主从模式为这两个问题提供了一个较好的解决方案。主从模式指的是使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致，主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取。也就是说，客户端可以将数据写入到主机，由主机自动将数据的写入操作同步到从机。
-主从模式很好的解决了数据备份问题，并且由于主从服务数据几乎是一致的，因...
+Cluster是什么博文至此，redis集群仍存在两类问题。
+第一类问题为单机性能不足问题
+
+每个redis实例存有全部数据，当数据量特别大，超过了单机内存容量的时候无法处理。
+虽然sentinal能将读操作分给从机处理实现部分负载均衡功能，若并发写压力特别高，主服务器也会承受不住。
+实现sentinal后，客户端不再直接连接特定redis实例，而是连接sentinel的ip和port，由sentinel来提供具体的可提供服务的Redis实现。存在流量瓶颈问题。
+
+为了解决这三个问题，Redis cluster提供在多个Redis间节...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -637,15 +608,14 @@ Sentinal概述单就主从模式而言，master节点挂了以后，redis不会�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis入门-定时函数serverCron/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis入门-应用场景/" >
             
-                <span>Redis入门-定时函数serverCron</span>
+                <span>Redis入门-应用场景</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-Redis将serverCron作为时间事件来运行，从而确保它每隔一段时间就会自动运行一次，又因为serverCron需要在Redis服务器运行期间一直定期运行，所以它是一个循环时间事件： serverCron 会一直定期执行，直到服务器关闭为止。
-在 Redis 2.6 版本中， 程序规定 serverCron 每秒运行  10 次， 平均每  100 毫秒运行一次。从 Redis 2.8 开始，用户可以通过修改 hz 选项来调整  serverCron的每秒执行次数。
-redis的serverCron函数，执行期间需要做11件事：...
+缓存为什么使用redis做缓存性能和并发两个角度：1）我们在碰到需要执行耗时特别久，且结果不频繁变动的SQL，就特别适合将运行结果放入缓存。这样，后面的请求就去缓存中读取，使得请求能够迅速响应。2）在大并发的情况下，所有的请求直接访问数据库，数据库会出现连接异常。这个时候，就需要使用redis做一个缓冲操作，让请求先访问到redis，而不是直接访问数据库。
+redis vs. memCache vs. ehCache三者都可以用来做缓存MemcacheMemcache可以利用多核优势，单实例吞吐量极高，可以达到几十万QPS,适用于最大...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -672,20 +642,49 @@ redis的serverCron函数，执行期间需要做11件事：...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/07/Redis集群-Cluster功能简述/" >
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-Sentinal/" >
             
-                <span>Redis集群-Cluster功能简述</span>
+                <span>Redis集群-Sentinal</span>
         </a>
         <div class="abstract-content">
             更多Redis入门系列文章，参见Redis入门-大纲
-Cluster是什么博文至此，redis集群仍存在两类问题。
-第一类问题为单机性能不足问题
+Sentinal概述单就主从模式而言，master节点挂了以后，redis不会从slave节点重新选一个做master。使用Sentinal可以很好解决这个问题。当master节点挂了以后，sentinel会在slave中选择一个做为master，并修改它们的配置文件，其他slave的配置文件也会被修改，比如slaveof属性会指向新的master。
+每个sentinel节点其实就是一个redis实例，与主从节点不同的是sentinel节点作用是用于监控redis数据节。由于sentinel也有挂掉的可能，所以一般sentinel也会...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "技术入门">技术入门</a>
+    
+</div>
 
-每个redis实例存有全部数据，当数据量特别大，超过了单机内存容量的时候无法处理。
-虽然sentinal能将读操作分给从机处理实现部分负载均衡功能，若并发写压力特别高，主服务器也会承受不住。
-实现sentinal后，客户端不再直接连接特定redis实例，而是连接sentinel的ip和port，由sentinel来提供具体的可提供服务的Redis实现。存在流量瓶颈问题。
-
-为了解决这三个问题，Redis cluster提供在多个Redis间节...
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/07/Redis集群-主从模型/" >
+            
+                <span>Redis集群-主从模型</span>
+        </a>
+        <div class="abstract-content">
+            更多Redis入门系列文章，参见Redis入门-大纲
+主从模式redis单例提供了一种数据缓存方式和丰富的数据操作api，但是将数据完全存储在单个redis中主要存在两个问题：数据备份和数据体量较大造成的性能降低。
+这里redis的主从模式为这两个问题提供了一个较好的解决方案。主从模式指的是使用一个redis实例作为主机，其余的实例作为备份机。主机和从机的数据完全一致，主机支持数据的写入和读取等各项操作，而从机则只支持与主机数据的同步和读取。也就是说，客户端可以将数据写入到主机，由主机自动将数据的写入操作同步到从机。
+主从模式很好的解决了数据备份问题，并且由于主从服务数据几乎是一致的，因...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1453,12 +1452,6 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
     
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 44
@@ -1477,6 +1470,11 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/22</span><a class="archive-post-title" href= "/2018/10/22/数据结构-图/" >数据结构-图</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/22</span><a class="archive-post-title" href= "/2018/10/22/数据结构-树/" >数据结构-树</a>
         </li>
     
@@ -1492,11 +1490,6 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/22</span><a class="archive-post-title" href= "/2018/10/22/数据结构-图/" >数据结构-图</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2018/10/20/数据结构概述/" >数据结构概述</a>
         </li>
     
@@ -1507,17 +1500,22 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-vs-NIO/" >IO vs. NIO</a>
         </li>
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-java-nio/" >IO-java.nio</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/IO-文件系统/" >IO-文件系统</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-happens-before规则/" >JVM-happens-before规则</a>
         </li>
     
     
@@ -1528,11 +1526,6 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-GC垃圾回收机制/" >JVM-GC垃圾回收机制</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2018/10/12/JVM-happens-before规则/" >JVM-happens-before规则</a>
         </li>
     
     
@@ -1562,12 +1555,12 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-并发模型/" >多线程-并发模型</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-lang-Thread/" >多线程-java.lang.Thread</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-java-lang-Thread/" >多线程-java.lang.Thread</a>
+            <span class="archive-post-date">10/11</span><a class="archive-post-title" href= "/2018/10/11/多线程-并发模型/" >多线程-并发模型</a>
         </li>
     
     
@@ -1577,7 +1570,7 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
         </li>
     
     
@@ -1592,7 +1585,7 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis常用命令总结/" >Redis常用命令总结</a>
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2018/10/09/Redis集群-3-3集群搭建实例/" >Redis集群-3+3集群搭建实例</a>
         </li>
     
     
@@ -1607,12 +1600,7 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
         </li>
     
     
@@ -1622,12 +1610,17 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis入门-定时函数serverCron/" >Redis入门-定时函数serverCron</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-集群基础知识/" >Redis集群-集群基础知识</a>
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-Cluster实现原理/" >Redis集群-Cluster实现原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/07</span><a class="archive-post-title" href= "/2018/10/07/Redis集群-主从模型/" >Redis集群-主从模型</a>
         </li>
     
     
@@ -1682,12 +1675,12 @@ Cluster是什么博文至此，redis集群仍存在两类问题。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/IOC相关类梳理/" >IOC相关类梳理</a>
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2018/10/01/Ioc容器的初始化/" >IOC容器的初始化</a>
         </li>
     
     
