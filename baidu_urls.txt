@@ -1,5 +1,5 @@
-https://whetherlove.github.io/2018/11/08/5种常见算法思想/
-https://whetherlove.github.io/2018/11/08/常用排序算法/
-https://whetherlove.github.io/2018/11/08/常用查找算法/
-https://whetherlove.github.io/2018/10/22/数据结构-Java中Map的实现/
-https://whetherlove.github.io/2018/10/22/数据结构-图/
+https://whetherlove.github.io/2018/11/30/散列算法/
+https://whetherlove.github.io/2018/11/30/常见安全算法/
+https://whetherlove.github.io/2018/11/30/消息模式与消息队列/
+https://whetherlove.github.io/2018/11/30/Shiro简介/
+https://whetherlove.github.io/2018/11/30/权限管理简述/
